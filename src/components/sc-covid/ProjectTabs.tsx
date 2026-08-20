@@ -1,10 +1,10 @@
 "use client";
 
-import { useId, useMemo, useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-import { useUmapPoints } from "@/hooks/useUmapPoints";
-import { shortCellTypeLabel } from "@/lib/sc-covid";
+import CellMap from "@/components/sc-covid/CellMap";
+import FoldChangeChart from "@/components/sc-covid/FoldChangeChart";
 
 const TABS = [
   { id: "overview", label: "Overview" },
@@ -93,8 +93,8 @@ export default function ProjectTabs() {
             className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600"
           >
             {active === "overview" && <OverviewPanel />}
-            {active === "method" && <Placeholder label="Method" />}
-            {active === "caveats" && <Placeholder label="Caveats" />}
+            {active === "method" && <MethodPanel />}
+            {active === "caveats" && <CaveatsPanel />}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -103,20 +103,6 @@ export default function ProjectTabs() {
 }
 
 function OverviewPanel() {
-  const umap = useUmapPoints();
-
-  // Temporary proof that the fetch + label map work end to end.
-  // Replaced by the real canvas chart in the next chunk.
-  const preview = useMemo(() => {
-    if (umap.status !== "loaded") return null;
-    const counts = new Map<string, number>();
-    for (const p of umap.points) counts.set(p.ct, (counts.get(p.ct) ?? 0) + 1);
-    return [...counts.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5)
-      .map(([ct, count]) => ({ label: shortCellTypeLabel(ct), count }));
-  }, [umap]);
-
   return (
     <div className="grid gap-10">
       <p className="max-w-[62ch] text-lg leading-relaxed text-slate-600">
@@ -126,37 +112,125 @@ function OverviewPanel() {
         empty out.
       </p>
 
-      <div className="flex min-h-56 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-slate-300 bg-white/50 p-8 text-sm text-slate-500">
-        {umap.status === "loading" && <span>Loading {"~24,000"} cells...</span>}
-        {umap.status === "error" && (
-          <span className="text-rose-600">Could not load the cell data.</span>
-        )}
-        {umap.status === "loaded" && (
-          <>
-            <span className="text-slate-400">
-              {umap.points.length.toLocaleString("en-US")} cells loaded. Top 5
-              types (unstyled, chart lands next chunk):
-            </span>
-            <ul className="text-slate-700">
-              {preview?.map((row) => (
-                <li key={row.label}>
-                  {row.label} - {row.count.toLocaleString("en-US")}
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
+      <CellMap />
+
+      <div className="mt-6">
+        <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
+          Which populations changed
+        </h2>
+        <p className="mt-4 max-w-[62ch] leading-relaxed text-slate-600">
+          Each bar compares how common a cell type is in COVID-19 blood against
+          healthy blood. Activated cells that fight infection sit at the top.
+          The resting naive and memory cells they came from sit at the bottom.
+        </p>
+        <div className="mt-8">
+          <FoldChangeChart />
+        </div>
       </div>
-
-      <Placeholder label="Which populations changed" />
     </div>
   );
 }
 
-function Placeholder({ label }: { label: string }) {
+function MethodPanel() {
   return (
-    <div className="flex min-h-56 items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white/50 p-8">
-      <p className="text-sm text-slate-400">{label} lands in a later chunk.</p>
+    <div className="grid max-w-[68ch] gap-10">
+      <Block title="Data">
+        Cells come from CELLxGENE Census (stable release 2025-11-08, CC-BY 4.0),
+        filtered to blood tissue with duplicates removed. From that pool, 50,000
+        COVID-19 cells and 50,000 healthy cells were drawn at random in equal
+        numbers (seed 42), for 100,000 total.
+      </Block>
+
+      <Block title="Approach">
+        Census ships a pre-computed scVI embedding for every cell: 50
+        dimensions, already corrected for sequencing batch and assay. Rather
+        than running the usual raw counts to normalize to PCA pipeline, the
+        UMAP here is built directly on that embedding. It is faster, and the
+        batch correction is handled before this analysis ever touches the
+        data, not patched in afterward.
+      </Block>
+
+      <Block title="Steps">
+        Neighbors and UMAP: <code className="text-slate-700">sc.pp.neighbors</code>{" "}
+        on the scVI embedding (15 neighbors), then{" "}
+        <code className="text-slate-700">sc.tl.umap</code> (min_dist 0.3, seed
+        42). Three marker genes, CD14, MKI67, and IGHG1, were pulled alongside
+        the embedding and log1p-transformed.
+      </Block>
+
+      <Block title="Quality check">
+        The embedding had no missing values across all 100,000 cells. Cells
+        came from 18 different sequencing assays, but the UMAP structures by
+        cell identity rather than by assay, which is what confirms the batch
+        correction actually held.
+      </Block>
+
+      <Block title="Reproduce">
+        Python, cellxgene-census, scanpy, numpy, pandas. Full source at{" "}
+        <a
+          href="https://github.com/ssolh2906/sc-covid"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline underline-offset-2 hover:text-blue-700"
+        >
+          ssolh2906/sc-covid
+        </a>
+        .
+      </Block>
     </div>
   );
 }
+
+const CAVEATS = [
+  {
+    title: "Annotation resolution varies between datasets",
+    body: "Some COVID-19 samples are labeled broadly (\"B cell\"), while healthy samples are labeled more specifically (\"naive B cell\"). That mismatch can inflate the fold change measured for the broader categories.",
+  },
+  {
+    title: "No severity data",
+    body: "COVID-19 samples are not split by mild, moderate, or severe illness, so it is possible that a smaller number of severe cases are driving the shift shown here.",
+  },
+  {
+    title: "A snapshot, not a timeline",
+    body: "This is cross-sectional data: one blood draw per donor. It can show that naive and memory cells are depleted during infection, but not whether that pool recovers afterward.",
+  },
+  {
+    title: "Single-diagnosis cells only",
+    body: "Cells with compound diagnoses, such as COVID-19 alongside diabetes, were excluded on purpose. This reflects single-diagnosis cases, not the full range of real patients.",
+  },
+];
+
+function CaveatsPanel() {
+  return (
+    <div className="max-w-[68ch]">
+      <p className="text-lg leading-relaxed text-slate-600">
+        Four limits worth knowing before trusting the numbers above.
+      </p>
+      <ol className="mt-8 grid gap-8">
+        {CAVEATS.map((c, i) => (
+          <li key={c.title} className="flex gap-4">
+            <span className="mt-1 shrink-0 font-mono text-sm text-slate-400 tabular-nums">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div>
+              <h3 className="font-medium text-slate-900">{c.title}</h3>
+              <p className="mt-1.5 leading-relaxed text-slate-600">{c.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function Block({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <h3 className="text-sm font-medium tracking-wide text-slate-900">
+        {title}
+      </h3>
+      <p className="mt-2 leading-relaxed text-slate-600">{children}</p>
+    </div>
+  );
+}
+

@@ -2,6 +2,7 @@
 // Source of truth is the untracked raw export in data/sc-export/; the small
 // files are copied under src/data so a fresh clone can build without it.
 import summary from "@/data/sc-covid/summary.json";
+import proportions from "@/data/sc-covid/celltype-proportions.json";
 
 export type MarkerKey = "CD14" | "MKI67" | "IGHG1";
 
@@ -103,3 +104,36 @@ export const CELL_TYPE_LABELS: Record<string, string> = {
 export function shortCellTypeLabel(fullName: string): string {
   return CELL_TYPE_LABELS[fullName] ?? fullName;
 }
+
+/** Which way a cell type moved. The export's own neutral band is 0.83 to 1.2. */
+export type Direction = "COVID" | "normal" | "neutral";
+
+export type ProportionRow = {
+  cell_type: string;
+  /** Share of all COVID-19 cells, 0 to 1. */
+  covid: number;
+  /** Share of all healthy cells, 0 to 1. */
+  normal: number;
+  fold_change: number;
+  direction: Direction;
+};
+
+export type CellTypeProportions = {
+  rows: ProportionRow[];
+  plasmablast: { covid: number; normal: number; note: string };
+};
+
+export const PROPORTIONS = proportions as CellTypeProportions;
+
+/**
+ * Rows on a log2 scale, biggest COVID expansion first.
+ * Raw fold change runs 0.03 to 12.94, so a linear axis would squash every
+ * depleted type into nothing. log2 gives both directions equal room.
+ */
+export const FOLD_CHANGE_ROWS = PROPORTIONS.rows
+  .map((row) => ({ ...row, log2: Math.log2(row.fold_change) }))
+  .sort((a, b) => b.log2 - a.log2);
+
+export const MAX_ABS_LOG2 = Math.max(
+  ...FOLD_CHANGE_ROWS.map((r) => Math.abs(r.log2)),
+);

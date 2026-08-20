@@ -43,13 +43,16 @@ Density is one notch above the portfolio default. This is a data page, so tighte
 Route: `/projects/sc-covid` (static, no SSR).
 
 ```
-[dark band]  breadcrumb + title + one-line finding
+[dark strip] breadcrumb only, thin
+[light]      title + one-line finding
 [light]      stat row: 100,000 cells · 2,680 donors · 21 cell types · 24,000 plotted
 [light]      tabs:  Overview  |  Method  |  Caveats
                Overview -> the two charts + short plain-English framing
                Method   -> how it was done, text only
                Caveats  -> the four limitations, text only
 ```
+
+Revised from the original dark-band-hero plan: this is a data page, not a landing page, so the entrance does not need a full dark hero moment. The dark section is now a thin brand strip (breadcrumb only), and the title + finding sit in the light body right below it. Keeps the same dark-to-light seam device, just with far less weight given to the dark part.
 
 Tabs are how we layer the two audiences. Overview is plain English for recruiters. Method and Caveats hold the technical depth for peers. Nobody has to scroll past what they do not care about.
 
@@ -155,16 +158,17 @@ If the 2.6 MB feels slow after we measure it, the fallback is packing coordinate
 
 One chunk at a time, review after each.
 
-| # | Chunk | Output |
-|---|---|---|
-| 1 | Route, dark-to-light shell, stat row, tab skeleton | Page exists, no charts yet |
-| 2 | Data loading + display-name map | Data on screen, unstyled proof |
-| 3 | UMAP canvas, Condition view only | The main flex, working |
-| 4 | UMAP: Cell type and Marker views | Full chart |
-| 5 | Fold change bar chart | Second chart |
-| 6 | Method + Caveats tab copy | Page complete |
-| 7 | Projects section + card on main page | Link wired up |
-commit through the steps. edit git ignore by needs
+| # | Chunk | Output | Status |
+|---|---|---|---|
+| 1 | Route, dark-to-light shell, stat row, tab skeleton | Page exists, no charts yet | Done |
+| 2 | Data loading + display-name map | Data on screen, unstyled proof | Done |
+| 3 | UMAP canvas, Condition view only | The main flex, working | Done |
+| 4 | UMAP: Cell type and Marker views | Full chart | Done |
+| 5 | Fold change bar chart | Second chart | Done |
+| 6 | Method + Caveats tab copy | Page complete | Done |
+| 7 | Projects section + card on main page | Link wired up | Done |
+
+All seven chunks built and verified (lint, build, and a headless preview pass: DOM inspection of the rendered home page, console-error check, and a server-render content check on `/projects/sc-covid`). Commit through the steps yourself; edit `.gitignore` as needed.
 
 Polish saved for later, not in the first pass:
 
