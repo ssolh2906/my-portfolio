@@ -1,7 +1,10 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useId, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+
+import { useUmapPoints } from "@/hooks/useUmapPoints";
+import { shortCellTypeLabel } from "@/lib/sc-covid";
 
 const TABS = [
   { id: "overview", label: "Overview" },
@@ -100,6 +103,20 @@ export default function ProjectTabs() {
 }
 
 function OverviewPanel() {
+  const umap = useUmapPoints();
+
+  // Temporary proof that the fetch + label map work end to end.
+  // Replaced by the real canvas chart in the next chunk.
+  const preview = useMemo(() => {
+    if (umap.status !== "loaded") return null;
+    const counts = new Map<string, number>();
+    for (const p of umap.points) counts.set(p.ct, (counts.get(p.ct) ?? 0) + 1);
+    return [...counts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([ct, count]) => ({ label: shortCellTypeLabel(ct), count }));
+  }, [umap]);
+
   return (
     <div className="grid gap-10">
       <p className="max-w-[62ch] text-lg leading-relaxed text-slate-600">
@@ -108,7 +125,29 @@ function OverviewPanel() {
         blood against healthy blood shows which populations grow and which ones
         empty out.
       </p>
-      <Placeholder label="Cell map" />
+
+      <div className="flex min-h-56 flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-slate-300 bg-white/50 p-8 text-sm text-slate-500">
+        {umap.status === "loading" && <span>Loading {"~24,000"} cells...</span>}
+        {umap.status === "error" && (
+          <span className="text-rose-600">Could not load the cell data.</span>
+        )}
+        {umap.status === "loaded" && (
+          <>
+            <span className="text-slate-400">
+              {umap.points.length.toLocaleString("en-US")} cells loaded. Top 5
+              types (unstyled, chart lands next chunk):
+            </span>
+            <ul className="text-slate-700">
+              {preview?.map((row) => (
+                <li key={row.label}>
+                  {row.label} - {row.count.toLocaleString("en-US")}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+
       <Placeholder label="Which populations changed" />
     </div>
   );

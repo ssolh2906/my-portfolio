@@ -56,3 +56,50 @@ export const STATS: Stat[] = [
     detail: "downsampled evenly per condition",
   },
 ];
+
+export type Disease = "COVID-19" | "normal";
+
+/** One plotted cell: UMAP coordinates, cell type, condition, marker expression. */
+export type UmapPoint = {
+  x: number;
+  y: number;
+  ct: string;
+  d: Disease;
+  cd14: number;
+  mki67: number;
+  ighg1: number;
+};
+
+export const UMAP_POINTS_URL = "/data/sc-covid/umap-points.json";
+
+// The export's cell_type_grouped labels are full ontology terms and don't fit
+// on a chart. Map each of the 21 to a short label for axes/legends/points;
+// the tooltip always shows the full name from CELL_TYPE_LABELS's key.
+export const CELL_TYPE_LABELS: Record<string, string> = {
+  Other: "Other",
+  "naive thymus-derived CD4-positive, alpha-beta T cell": "naive CD4 T",
+  "B cell": "B cell",
+  "CD8-positive, alpha-beta T cell": "CD8 T",
+  "CD14-positive, CD16-negative classical monocyte":
+    "classical monocyte (CD14+CD16-)",
+  "classical monocyte": "classical monocyte",
+  "CD4-positive, alpha-beta T cell": "CD4 T",
+  "central memory CD4-positive, alpha-beta T cell": "central memory CD4 T",
+  "CD16-positive, CD56-dim natural killer cell, human": "CD16+ NK cell",
+  "natural killer cell": "NK cell",
+  "CD14-positive monocyte": "CD14+ monocyte",
+  "naive B cell": "naive B cell",
+  "naive thymus-derived CD8-positive, alpha-beta T cell": "naive CD8 T",
+  "mature alpha-beta T cell": "mature T cell",
+  "effector memory CD8-positive, alpha-beta T cell": "effector memory CD8 T",
+  "effector memory CD4-positive, alpha-beta T cell": "effector memory CD4 T",
+  "memory B cell": "memory B cell",
+  "mucosal invariant T cell": "MAIT cell",
+  "CD4-positive, alpha-beta memory T cell": "memory CD4 T",
+  "CD14-low, CD16-positive monocyte": "non-classical monocyte",
+  monocyte: "monocyte",
+};
+
+export function shortCellTypeLabel(fullName: string): string {
+  return CELL_TYPE_LABELS[fullName] ?? fullName;
+}
