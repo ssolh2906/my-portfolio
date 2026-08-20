@@ -1,6 +1,7 @@
-// Single access point for the sc-covid export. Only this file knows where the
-// raw export lives, so the ugly relative path stays in one place.
-import summary from "../../data/sc-export/summary.json";
+// Single access point for the sc-covid data the app ships.
+// Source of truth is the untracked raw export in data/sc-export/; the small
+// files are copied under src/data so a fresh clone can build without it.
+import summary from "@/data/sc-covid/summary.json";
 
 export type MarkerKey = "CD14" | "MKI67" | "IGHG1";
 

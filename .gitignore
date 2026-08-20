@@ -42,3 +42,8 @@ next-env.d.ts
 
 # BIBI Hackathon
 BIBI_Bioinformatics_hackathon/
+
+# raw export drop from the sc-covid analysis repo (6.7MB, incl. figure PNGs).
+# whatever the site actually ships is copied into src/data/ or public/data/.
+# leading slash matters: a bare "data/" would also ignore src/data/.
+/data/
