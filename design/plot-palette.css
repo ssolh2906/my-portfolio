@@ -1,0 +1,90 @@
+/* ------------------------------------------------------------------ */
+/* Denim system — 20-slot categorical palette for scatter/UMAP charts */
+/* (cell-type identity, or any other many-category series)             */
+/* Generated in OKLCH: 20 hues evenly spaced from the brand hue        */
+/* (251.5°), alternating two lightness/chroma bands for extra step.    */
+/* Paste into globals.css alongside color-tokens.css, or import        */
+/* standalone in a chart file.                                         */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --cat-01: #3283D3; /* blue      — brand-anchored, use for slot 1 / largest cluster */
+  --cat-02: #364A9C; /* indigo    */
+  --cat-03: #7D6FD1; /* violet    */
+  --cat-04: #653A8D; /* deep violet */
+  --cat-05: #A95FB1; /* orchid    */
+  --cat-06: #812D68; /* plum      */
+  --cat-07: #C3567D; /* rose      */
+  --cat-08: #8E2936; /* deep red  */
+  --cat-09: #C75B3F; /* rust      */
+  --cat-10: #883600; /* brown     */
+  --cat-11: #B46E00; /* amber     */
+  --cat-12: #845C00; /* olive-brown */
+  --cat-13: #8A8500; /* olive     */
+  --cat-14: #415E00; /* moss      */
+  --cat-15: #429542; /* green     */
+  --cat-16: #006839; /* forest    */
+  --cat-17: #009B83; /* teal-green */
+  --cat-18: #009EA4; /* cyan      */
+  --cat-19: #0094B6; /* sky blue  */
+  --cat-20: #005B90; /* deep azure */
+}
+
+/*
+How to use
+----------
+1. Assign by RANK, not by category name. Slot 1 goes to your largest/most
+   important cluster, slot 2 to the second largest, and so on — never
+   assign slots alphabetically by cell-type name, or the same cell type
+   changes color every time the dataset filters. Color follows the
+   entity, not its position, but the SLOT is chosen once by an initial
+   ranking and then locked to that entity going forward.
+
+2. This set passes the dataviz-skill categorical validator on ADJACENT
+   pairs (legend order, stacked bars, grouped bars). It does NOT clear
+   the stricter all-pairs bar required for scatter/UMAP with every
+   possible pair of dots touching — no 20-hue set can; even 8 hues cap
+   out around 3 for that bar (see dataviz skill, color-formula.md).
+   That's expected, not a bug: at 20 categories, some pairs will always
+   sit close for someone. Ship the mitigation, not a perfect palette:
+     - Legend always visible, every slot labeled.
+     - On hover/click, dim everything but the selected cluster
+       (opacity ~0.15) rather than relying on color alone to separate
+       a crowded UMAP.
+     - Small/rare clusters (<1% of cells) fold into a neutral "Other"
+       slot (use --color-slate-400 from color-tokens.css) instead of
+       consuming a 21st hue nobody can distinguish anyway.
+
+3. ONE KNOWN WEAK PAIR: slot 18 (cyan, #009EA4) and slot 19 (sky blue,
+   #0094B6) sit only ~4.6 ΔE apart (floor is 15) — sRGB genuinely can't
+   produce two well-separated saturated teals in this hue range at a
+   usable lightness (this is a known gamut limitation, not a tuning
+   miss — every band tried here bottomed out the same way). If two
+   cell types you're plotting would land in slots 18 and 19, either:
+     a) swap one of them to reuse Coral or another far slot instead, or
+     b) make sure they're never adjacent in the legend / never the two
+        most likely to be confused (rare + common pairing beats two
+        similarly-sized clusters here).
+
+4. Violet appears at slots 3–6. The site's own UI (buttons, links,
+   badges) stays purple-free per the brand system — this is the one
+   deliberate exception, scoped to chart-series identity only, because
+   20 mutually-distinguishable categorical hues aren't achievable while
+   skipping an entire third of the color wheel. Nothing outside a chart
+   legend should use these four.
+
+5. Sequential/diverging encodings (magnitude, fold-change) should NOT
+   pull from this list — use the primary Denim ramp (color-tokens.css)
+   for sequential, and Denim vs Coral for diverging, as already set up
+   in the site's color system.
+*/
+
+/* JS array, for chart libraries that want a plain list */
+/*
+const CATEGORICAL_PALETTE = [
+  "#3283D3", "#364A9C", "#7D6FD1", "#653A8D", "#A95FB1",
+  "#812D68", "#C3567D", "#8E2936", "#C75B3F", "#883600",
+  "#B46E00", "#845C00", "#8A8500", "#415E00", "#429542",
+  "#006839", "#009B83", "#009EA4", "#0094B6", "#005B90",
+];
+*/

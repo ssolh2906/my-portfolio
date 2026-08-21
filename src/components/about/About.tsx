@@ -29,14 +29,14 @@ export default function About() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section id="about" className="relative bg-[#f6f8fb]">
-      {/* hero's dark navy bleeding into the light body, so the seam reads as one page */}
+    <section id="about" className="relative bg-slate-50">
+      {/* hero's denim-50 bleeding into the slightly cooler body, so the seam reads as one page */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-28 sm:h-36 md:h-44 [background:linear-gradient(to_bottom,#050912_0%,#050912_10%,#f6f8fb_100%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-linear-to-b from-denim-50 to-slate-50 sm:h-20 md:h-24"
       />
 
-      <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-32 sm:px-8 sm:pt-40 md:pb-32 md:pt-48 lg:px-12">
+      <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-16 sm:px-8 sm:pt-20 md:pb-32 md:pt-24 lg:px-12">
         <motion.div
           variants={container}
           initial={reduceMotion ? "show" : "hidden"}
@@ -45,7 +45,7 @@ export default function About() {
         >
           <motion.span
             variants={item}
-            className="block font-mono text-xs uppercase tracking-[0.22em] text-blue-600"
+            className="block font-mono text-xs uppercase tracking-[0.22em] text-denim-600"
           >
             About
           </motion.span>
@@ -64,7 +64,7 @@ export default function About() {
 
             <motion.blockquote
               variants={item}
-              className="border-l-4 border-blue-600 pl-6 lg:col-span-6 lg:col-start-7 lg:pl-8"
+              className="border-l-4 border-denim-600 pl-6 lg:col-span-6 lg:col-start-7 lg:pl-8"
             >
               <p className="text-2xl font-medium leading-snug tracking-tight text-slate-900 sm:text-3xl lg:text-[2.25rem]">
                 &ldquo;I design leakage-safe evaluations and report honest

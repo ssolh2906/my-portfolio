@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import ScrollScrubArtwork from "./ScrollScrubArtwork";
 
 const container = {
   hidden: {},
@@ -23,87 +24,80 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 120]);
-
   return (
     <section
       ref={sectionRef}
       id="home"
-      className="relative flex min-h-[100dvh] items-end overflow-hidden bg-[#050912]"
+      className="relative overflow-hidden bg-denim-50"
     >
+      {/* network artwork: sits behind the text as one background layer, not a boxed-off panel.
+          Sized by aspect-ratio (not stretched to section height) and mask-faded into the
+          background so it reads as part of the same composition as the copy. */}
       <motion.div
-        style={{ y: reduceMotion ? 0 : parallaxY }}
-        className="absolute inset-0 scale-110"
+        aria-hidden
+        initial={reduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent, black 30%, black 85%, transparent)",
+          maskImage:
+            "linear-gradient(to right, transparent, black 30%, black 85%, transparent)",
+        }}
+        className="absolute right-[-8%] top-1/2 aspect-video w-[92%] -translate-y-1/2 sm:w-[80%] md:right-[-4%] md:w-[68%] lg:w-[58%]"
       >
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/hero-poster.png"
-          className="h-full w-full object-cover"
-        >
-          {/* TODO: add <source src="/hero-loop.mp4" type="video/mp4" /> once the ambient bio/DNA loop is ready */}
-        </video>
+        <ScrollScrubArtwork target={sectionRef} />
       </motion.div>
 
-      {/* legibility scrim */}
-      <div className="pointer-events-none absolute inset-0 [background:linear-gradient(to_top,#050912_0%,rgba(5,9,18,0.72)_45%,rgba(5,9,18,0.18)_100%)]" />
-      <div className="pointer-events-none absolute inset-0 [background:radial-gradient(ellipse_60%_55%_at_18%_100%,rgba(56,124,255,0.30),transparent_70%)]" />
+      {/* soft wash so text stays legible over the artwork on every viewport */}
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-r from-denim-50 via-denim-50/55 to-transparent" />
 
-      {/* circuit grid depth */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.07] [background-image:linear-gradient(rgba(96,165,250,0.7)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.7)_1px,transparent_1px)] [background-size:56px_56px]"
-      />
-
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-20 pt-24 sm:px-8 md:pb-28 lg:px-12">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-12">
         <motion.div
           variants={container}
           initial={reduceMotion ? "show" : "hidden"}
           animate="show"
-          className="grid grid-cols-1 lg:grid-cols-12"
+          className="max-w-xl lg:max-w-2xl"
         >
-          <div className="lg:col-span-7">
-            <motion.h1 variants={item} className="text-balance">
-              <span className="block text-2xl font-medium text-white/70 sm:text-3xl">
-                Solhee Tucker
-              </span>
-              <span className="mt-2 block text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-                I teach machines to read biology
-                <span className="text-blue-400">.</span>
-              </span>
-            </motion.h1>
+          <motion.div variants={item}>
+            <p className="text-sm font-medium text-slate-700">Solhee Tucker</p>
+            <p className="mt-1 text-sm font-medium text-denim-600">
+              ML / Bioinformatics Engineer
+            </p>
+          </motion.div>
 
-            <motion.p
-              variants={item}
-              className="mt-6 max-w-[46ch] text-base leading-relaxed text-white/70 sm:text-lg"
-            >
-            MS Bioinformatics, Former Software Engineer · PyTorch, LLMs, NGS pipelines · from model to deployment.
-            </motion.p>
+          <motion.h1
+            variants={item}
+            className="mt-6 text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl"
+          >
+            From biological complexity to scalable solutions.
+          </motion.h1>
 
-            <motion.div
-              variants={item}
-              className="mt-9 flex flex-wrap items-center gap-5"
+          <motion.p
+            variants={item}
+            className="mt-6 max-w-[42ch] text-base leading-relaxed text-slate-600 sm:text-lg"
+          >
+            Machine learning built on real biological data, shipped as
+            software people can actually rely on.
+          </motion.p>
+
+          <motion.div
+            variants={item}
+            className="mt-9 flex flex-wrap items-center gap-4"
+          >
+            <a
+              href="#projects"
+              className="inline-flex h-12 items-center justify-center rounded-full bg-denim-600 px-7 text-sm font-medium text-white transition-transform duration-300 hover:-translate-y-0.5 hover:bg-denim-700 active:scale-[0.98]"
             >
-              <a
-                href="#projects"
-                className="inline-flex h-12 items-center justify-center rounded-full bg-blue-500 px-7 text-sm font-medium text-white transition-transform duration-300 hover:-translate-y-0.5 hover:bg-blue-400 active:scale-[0.98]"
-              >
-                View projects
-              </a>
-              <a
-                href="#contact"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-white/20 px-7 text-sm font-medium text-white/90 transition-colors duration-300 hover:border-white/40 hover:bg-white/5 active:scale-[0.98]"
-              >
-                Get in touch
-              </a>
-            </motion.div>
-          </div>
+              View projects
+            </a>
+            <a
+              href="#contact"
+              className="inline-flex h-12 items-center justify-center rounded-full border border-slate-200 bg-white/60 px-7 text-sm font-medium text-slate-700 backdrop-blur-sm transition-colors duration-300 hover:border-denim-300 hover:bg-white active:scale-[0.98]"
+            >
+              Get in touch
+            </a>
+          </motion.div>
         </motion.div>
       </div>
     </section>

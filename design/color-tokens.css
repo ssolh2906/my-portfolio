@@ -1,0 +1,62 @@
+/* ------------------------------------------------------------------ */
+/* Denim color system — generated from primary #3B6FA6 (OKLCH-stepped) */
+/* Paste into the @theme inline block in src/app/globals.css           */
+/* ------------------------------------------------------------------ */
+
+@theme inline {
+  /* Primary — Denim (buttons, links, headings, brand) */
+  --color-denim-50:  #F1F8FF;
+  --color-denim-100: #E3EEFC;
+  --color-denim-200: #C6DCF3;
+  --color-denim-300: #9CBEE4;
+  --color-denim-400: #6F9CCD;
+  --color-denim-500: #3B6FA6; /* brand base */
+  --color-denim-600: #255A90; /* body-text-safe, hover/active */
+  --color-denim-700: #114577;
+  --color-denim-800: #002E58;
+  --color-denim-900: #001C3A;
+  --color-denim-950: #000D22;
+
+  /* Secondary — Teal (secondary actions, icons, tags) */
+  --color-teal-100: #D5F2F1;
+  --color-teal-300: #82CDCD;
+  --color-teal-500: #009A9B;
+  --color-teal-600: #007E7F; /* secondary base */
+  --color-teal-700: #006263;
+
+  /* Tertiary — Coral (rare accent, highlight, diverging pole) */
+  --color-coral-100: #FFE4DB;
+  --color-coral-300: #F1AA94;
+  --color-coral-500: #E4734F; /* tertiary base */
+  --color-coral-600: #CD5630; /* text-safe */
+
+  /* Neutral — Slate (text, borders; denim-hue-tinted gray) */
+  --color-slate-50:  #F6F9FB;
+  --color-slate-100: #ECEFF2;
+  --color-slate-200: #DADEE3;
+  --color-slate-400: #9EA5AD;
+  --color-slate-500: #737B85;
+  --color-slate-600: #565F69;
+  --color-slate-700: #3C434C;
+  --color-slate-900: #12161B;
+
+  /* Existing site surfaces, unchanged */
+  --color-hero: #050912;
+  --color-body: #f6f8fb;
+}
+
+/*
+Usage notes
+-----------
+- denim-500 is the brand blue as picked. Use denim-600 for anything
+  text-sized (14–16px) that needs to sit on white/body — 500 alone is
+  5.24:1 on white, which is fine for large text/icons but tight for body copy.
+- teal and denim are close enough in OKLCH (~9 dE, floor is 15) that they
+  should not stand as unlabeled neighbors on the same chart. Fine paired
+  as primary/secondary UI actions; if teal becomes a second chart series
+  next to denim, give it a direct label or legend.
+- coral is intentionally rare — reach for it once or twice per view, not
+  as a repeating UI color.
+- denim-50/100 hold 18.6:1 / 17.0:1 contrast on the #050912 hero, so they're
+  safe for text directly on dark glass panels without a scrim.
+*/
