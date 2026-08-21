@@ -44,19 +44,22 @@ Each section lives in `src/components/<section>/` and follows the same shape:
 - `useReducedMotion()` guards every animation — pass `initial={reduceMotion ? "show" : "hidden"}` and zero out parallax transforms rather than skipping the guard.
 - `id` matching the `#anchor` in `Nav`'s `NAV_LINKS`.
 
-**The dark→light seam is load-bearing.** Hero is a full-viewport dark section (`#050912`) with a video layer, legibility scrim, radial glow, and a circuit-grid overlay stacked as absolute siblings. About then paints its own top-edge gradient from `#050912` into the light body (`#f6f8fb`) so the two sections read as one continuous page. Any new section boundary near the hero has to preserve that continuity, and new sections below About stay on the light theme.
+**⚠️ Superseded 2026-08-20 — read `docs/hero-redesign-plan.md` before touching Hero.** The dark→light seam described below is the *old* plan. Current code still matches it (untouched), but the design direction has changed to a unified light theme — see "Design direction" below for the target state.
 
-Hero's `<video>` currently has no `<source>` — it renders `poster="/hero-poster.png"` until the ambient bio/DNA loop is ready.
+~~The dark→light seam is load-bearing.~~ Hero is *currently* a full-viewport dark section (`#050912`) with a video layer, legibility scrim, radial glow, and a circuit-grid overlay stacked as absolute siblings. About paints its own top-edge gradient from `#050912` into the light body (`#f6f8fb`) so the two sections read as one continuous page — this seam is being retired, not extended. Don't build new sections against this dark/light split; check `docs/hero-redesign-plan.md` first.
+
+Hero's `<video>` currently has no `<source>` — it renders `poster="/hero-poster.png"`. It's being replaced with a generated DNA→circuit-helix image → looping video → animated WebP (pipeline and prompts in `docs/hero-redesign-plan.md`); don't build against the old "ambient bio/DNA loop" placeholder plan.
 
 ## Design direction
 
 Constraints, not final values — let the design skill choose specifics.
 
-- Dark atmospheric hero → light, readable body (data legibility wins below the fold).
-- Accent: **blue** family, teal acceptable as secondary. **No purple.**
-- Signature effect: liquid glass / frosted translucent panels (see `Nav` and the About stat strip — `backdrop-blur` + `bg-white/x` + inset-highlight shadow).
-- Asymmetric, grid-based, generous whitespace. No centered-hero cliché.
-- Keep static-export friendly; no SSR is needed.
+- **Unified light theme, including the hero** (changed 2026-08-20, was "dark atmospheric hero → light body"). No full-viewport dark section. Any "dark" mood comes from the hero's generated image/video content itself, not the section background — see `docs/hero-redesign-plan.md` section 1 for the token-by-token remap (hero bg `#050912` → `#f6f8fb`, hero text `white` → `slate-900`, Nav glass switches to the light-glass recipe already used in About/Projects, etc.).
+- Accent: **blue** family, teal acceptable as secondary. **No purple.** (unchanged)
+- Signature effect: liquid glass / frosted translucent panels (see `Nav` and the About stat strip — `backdrop-blur` + `bg-white/x` + inset-highlight shadow). Unchanged, but the Nav's currently-dark glass variant needs to move to the light recipe once the hero goes light.
+- Asymmetric, grid-based, generous whitespace. No centered-hero cliché. (unchanged)
+- Keep static-export friendly; no SSR is needed. (unchanged)
+- Full color inventory (current + target): `docs/color-reference.md`.
 
 ### Data-viz rules
 
