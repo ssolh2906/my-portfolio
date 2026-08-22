@@ -13,32 +13,22 @@ export const metadata: Metadata = {
 export default function ScCovidPage() {
   return (
     <main className="flex-1">
-      <section className="relative overflow-hidden bg-[#050912]">
-        {/* thin brand strip, not a full hero: the page's job is the data, not the entrance */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.05] [background-image:linear-gradient(rgba(96,165,250,0.7)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.7)_1px,transparent_1px)] [background-size:56px_56px]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 [background:radial-gradient(ellipse_55%_70%_at_12%_100%,rgba(56,124,255,0.18),transparent_70%)]"
-        />
-
+      <section className="relative bg-denim-50">
         <div className="relative mx-auto w-full max-w-7xl px-6 py-5 sm:px-8 lg:px-12">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm font-medium text-white/60 transition-colors duration-300 hover:text-white"
+            className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition-colors duration-300 hover:text-denim-600"
           >
             <span aria-hidden>&larr;</span> Solhee Tucker
           </Link>
         </div>
       </section>
 
-      <section className="relative bg-[#f6f8fb]">
-        {/* short seam bleeding up from the strip above, same device as the About section */}
+      <section className="relative bg-slate-50">
+        {/* denim-50 bleeding into the slightly cooler body, same device as the About section */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-12 sm:h-16 [background:linear-gradient(to_bottom,#050912_0%,#050912_10%,#f6f8fb_100%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-linear-to-b from-denim-50 to-slate-50 sm:h-20 md:h-24"
         />
 
         <div className="relative mx-auto max-w-7xl px-6 pb-28 pt-14 sm:px-8 sm:pt-16 md:pb-36 lg:px-12">

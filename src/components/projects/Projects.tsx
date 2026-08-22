@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
 import { FOLD_CHANGE_ROWS, SUMMARY, shortCellTypeLabel } from "@/lib/sc-covid";
+import { VARIANTS as SNP_VARIANTS } from "@/lib/snp-summary";
 
 const container = {
   hidden: {},
@@ -21,11 +22,69 @@ const item = {
   },
 };
 
-const TAGS = ["Python", "scanpy", "single-cell RNA-seq", "Next.js"];
+type ProjectCardData = {
+  slug: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  tags: string[];
+  stat: {
+    headlineValue: string;
+    headlineLabel: string;
+    subStats: { value: string; label: string }[];
+  };
+};
 
 // Biggest COVID-19 expansion in the dataset (rows are sorted descending by
 // log2 fold change), used as the card's headline stat.
 const TOP_ROW = FOLD_CHANGE_ROWS[0];
+
+const RS6311 = SNP_VARIANTS["rs6311"];
+const SNP_PAPERS_CITED = Object.values(SNP_VARIANTS).reduce(
+  (sum, v) => sum + v.citations.length,
+  0,
+);
+
+const PROJECTS: ProjectCardData[] = [
+  {
+    slug: "sc-covid",
+    eyebrow: "Single-cell genomics",
+    title: `Reading COVID-19 in ${SUMMARY.n_cells_total.toLocaleString("en-US")} blood cells`,
+    description:
+      "COVID-19 blood expands activated effector cells and drains the resting naive and memory pool. An interactive single-cell analysis, from CELLxGENE Census data to a browser-native chart.",
+    tags: ["Python", "scanpy", "single-cell RNA-seq", "Next.js"],
+    stat: {
+      headlineValue: `${TOP_ROW.fold_change.toFixed(1)}x`,
+      headlineLabel: `more ${shortCellTypeLabel(TOP_ROW.cell_type)} in COVID-19 blood`,
+      subStats: [
+        {
+          value: SUMMARY.n_cells_total.toLocaleString("en-US"),
+          label: "cells analyzed",
+        },
+        {
+          value: SUMMARY.n_donors.toLocaleString("en-US"),
+          label: "donors",
+        },
+      ],
+    },
+  },
+  {
+    slug: "snp-summary",
+    eyebrow: "Bioinformatics · LLM summaries",
+    title: "Turning an rs ID into a bioinformatics summary",
+    description:
+      "NCBI and Ensembl data, summarized and grounded in real PubMed citations rather than model recall. A fixed demo of a bioinformatics-hackathon pipeline.",
+    tags: ["NCBI", "Ensembl", "PubMed", "Next.js"],
+    stat: {
+      headlineValue: String(RS6311.dbsnpCitationCount),
+      headlineLabel: "studies linked to rs6311 in dbSNP",
+      subStats: [
+        { value: String(Object.keys(SNP_VARIANTS).length), label: "example variants" },
+        { value: String(SNP_PAPERS_CITED), label: "papers cited" },
+      ],
+    },
+  },
+];
 
 export default function Projects() {
   const reduceMotion = useReducedMotion();
@@ -46,72 +105,67 @@ export default function Projects() {
             Projects
           </motion.h2>
 
-          <motion.div variants={item} className="mt-10 sm:mt-14">
-            <Link
-              href="/projects/sc-covid"
-              className="group block rounded-3xl border border-slate-200/80 bg-white/70 p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md transition-all duration-300 hover:border-slate-300 hover:shadow-lg sm:p-10"
-            >
-              <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
-                <div className="lg:col-span-7">
-                  <span className="text-xs font-medium text-slate-500">
-                    Featured project
-                  </span>
-                  <h3 className="mt-3 text-2xl font-semibold tracking-tight text-balance text-slate-900 sm:text-3xl">
-                    Reading COVID-19 in {SUMMARY.n_cells_total.toLocaleString("en-US")}{" "}
-                    blood cells
-                  </h3>
-                  <p className="mt-4 max-w-[52ch] leading-relaxed text-slate-600">
-                    COVID-19 blood expands activated effector cells and drains
-                    the resting naive and memory pool. An interactive
-                    single-cell analysis, from CELLxGENE Census data to a
-                    browser-native chart.
-                  </p>
-                  <ul className="mt-6 flex flex-wrap gap-2">
-                    {TAGS.map((tag) => (
-                      <li
-                        key={tag}
-                        className="rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600"
-                      >
-                        {tag}
-                      </li>
-                    ))}
-                  </ul>
-                  <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-blue-600 transition-all duration-300 group-hover:gap-3">
-                    View case study
-                    <span aria-hidden>&rarr;</span>
-                  </span>
-                </div>
+          <div className="mt-10 grid gap-6 sm:mt-14">
+            {PROJECTS.map((project) => (
+              <motion.div key={project.slug} variants={item}>
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="group block rounded-3xl border border-slate-200/80 bg-white/70 p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md transition-all duration-300 hover:border-slate-300 hover:shadow-lg sm:p-10"
+                >
+                  <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
+                    <div className="lg:col-span-7">
+                      <span className="text-xs font-medium text-slate-500">
+                        {project.eyebrow}
+                      </span>
+                      <h3 className="mt-3 text-2xl font-semibold tracking-tight text-balance text-slate-900 sm:text-3xl">
+                        {project.title}
+                      </h3>
+                      <p className="mt-4 max-w-[52ch] leading-relaxed text-slate-600">
+                        {project.description}
+                      </p>
+                      <ul className="mt-6 flex flex-wrap gap-2">
+                        {project.tags.map((tag) => (
+                          <li
+                            key={tag}
+                            className="rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600"
+                          >
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
+                      <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-blue-600 transition-all duration-300 group-hover:gap-3">
+                        View case study
+                        <span aria-hidden>&rarr;</span>
+                      </span>
+                    </div>
 
-                <div className="lg:col-span-5">
-                  <div className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-8">
-                    <span className="block text-5xl font-semibold tracking-tight text-slate-900">
-                      {TOP_ROW.fold_change.toFixed(1)}x
-                    </span>
-                    <span className="mt-2 block text-sm leading-relaxed text-slate-500">
-                      more {shortCellTypeLabel(TOP_ROW.cell_type)} in COVID-19
-                      blood
-                    </span>
-                    <div className="mt-6 grid grid-cols-2 gap-4 border-t border-slate-100 pt-6">
-                      <div>
-                        <span className="block text-lg font-semibold text-slate-900">
-                          {SUMMARY.n_cells_total.toLocaleString("en-US")}
+                    <div className="lg:col-span-5">
+                      <div className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-8">
+                        <span className="block text-5xl font-semibold tracking-tight text-slate-900">
+                          {project.stat.headlineValue}
                         </span>
-                        <span className="text-sm text-slate-500">
-                          cells analyzed
+                        <span className="mt-2 block text-sm leading-relaxed text-slate-500">
+                          {project.stat.headlineLabel}
                         </span>
-                      </div>
-                      <div>
-                        <span className="block text-lg font-semibold text-slate-900">
-                          {SUMMARY.n_donors.toLocaleString("en-US")}
-                        </span>
-                        <span className="text-sm text-slate-500">donors</span>
+                        <div className="mt-6 grid grid-cols-2 gap-4 border-t border-slate-100 pt-6">
+                          {project.stat.subStats.map((sub) => (
+                            <div key={sub.label}>
+                              <span className="block text-lg font-semibold text-slate-900">
+                                {sub.value}
+                              </span>
+                              <span className="text-sm text-slate-500">
+                                {sub.label}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </Link>
-          </motion.div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>

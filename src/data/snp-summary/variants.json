@@ -1,0 +1,105 @@
+{
+  "rs6311": {
+    "rsId": "rs6311",
+    "dbsnpCitationCount": 149,
+    "gene": {
+      "symbol": "HTR2A",
+      "name": "5-hydroxytryptamine receptor 2A",
+      "ensemblId": "ENSG00000102468",
+      "consequence": "upstream_gene_variant (~290 bp from the transcript start)"
+    },
+    "location": {
+      "chromosome": "13",
+      "grch38Position": 46897343,
+      "alleles": "C / A / T",
+      "ancestralAllele": "C"
+    },
+    "alias": "Widely referenced in the literature as the HTR2A -1438A/G promoter polymorphism.",
+    "clinicalSignificance": ["likely benign", "risk factor"],
+    "clinicalSignificanceNote": "ClinVar carries both labels for this variant depending on submitter and context — typical for a common regulatory SNP studied mostly through association studies rather than direct pathogenicity testing.",
+    "alleleFrequency": {
+      "headline": "T allele ≈ 44% globally (gnomAD)",
+      "byPopulation": [
+        { "population": "Global", "pct": 44.4 },
+        { "population": "European", "pct": 43.7 },
+        { "population": "East Asian", "pct": 58.8 },
+        { "population": "African", "pct": 40.9 },
+        { "population": "South Asian", "pct": 40.5 },
+        { "population": "American", "pct": 36.2 }
+      ]
+    },
+    "externalIds": {
+      "omim": "182135.0002",
+      "clinvar": ["RCV000605277", "RCV001093594", "RCV001836848"],
+      "pharmgkb": "PA166154673"
+    },
+    "summary": "rs6311 sits in the HTR2A promoter, about 290 bp upstream of the serotonin 2A receptor gene on chromosome 13. It doesn't change an amino acid — its effect is on how much receptor gets made, not what shape it folds into. That regulatory role is why almost every one of its 100+ linked publications is a psychiatric pharmacogenomics study rather than a structural one: antipsychotic response in schizophrenia, treatment-resistant OCD, ADHD, and antidepressant response all show up in the literature tied to this variant.",
+    "dataSources": ["NCBI Variation Services", "Ensembl VEP / REST", "PubMed"],
+    "citations": [
+      {
+        "pmid": "42531509",
+        "title": "The HTR2A rs6311 and rs6313 polymorphisms and atypical antipsychotics response in schizophrenia: a scoping review",
+        "journal": "Pharmacogenetics and Genomics",
+        "year": 2026
+      },
+      {
+        "pmid": "40562131",
+        "title": "Synergistic SNP-SNP interaction of NRG1 and ERBB4 increases the risk of schizophrenia",
+        "journal": "Gene",
+        "year": 2025
+      },
+      {
+        "pmid": "41057833",
+        "title": "The role of 5-hydroxytryptamine receptor 2A (HTR2A) gene polymorphisms in treatment-resistant obsessive-compulsive disorder",
+        "journal": "BMC Psychiatry",
+        "year": 2025
+      }
+    ]
+  },
+  "rs2068824": {
+    "rsId": "rs2068824",
+    "dbsnpCitationCount": 1,
+    "gene": {
+      "symbol": "NAV1",
+      "name": "neuron navigator 1",
+      "ensemblId": "ENSG00000134369",
+      "consequence": "intron_variant"
+    },
+    "location": {
+      "chromosome": "1",
+      "grch38Position": 201625537,
+      "alleles": "T / A / C",
+      "ancestralAllele": "C"
+    },
+    "alias": "Overlaps an annotated Ensembl regulatory enhancer region (ENSR1_B3H2DB), though no study has characterized what it regulates.",
+    "clinicalSignificance": [],
+    "clinicalSignificanceNote": "Not classified in ClinVar — not in data.",
+    "alleleFrequency": {
+      "headline": "Minor allele C ≈ 9.7% globally (gnomAD)",
+      "byPopulation": [
+        { "population": "Global", "pct": 9.7 },
+        { "population": "East Asian", "pct": 26.7 },
+        { "population": "African", "pct": 7.9 },
+        { "population": "European", "pct": 6.0 },
+        { "population": "American", "pct": 3.9 },
+        { "population": "South Asian", "pct": 2.8 }
+      ]
+    },
+    "externalIds": {
+      "omim": null,
+      "clinvar": [],
+      "pharmgkb": null
+    },
+    "summary": "rs2068824 is an intron variant in NAV1 on chromosome 1, sitting inside an annotated enhancer region with no further functional characterization on record. Unlike rs6311, it has exactly one linked publication in dbSNP — and that paper is a large celiac disease GWAS where this SNP was one of many genotyped on the array, not a highlighted finding. It's included here deliberately: not every SNP has a rich story, and a demo that only shows dramatic results would be misleading about what real variant lookups usually return.",
+    "dataSources": ["NCBI Variation Services", "Ensembl VEP / REST", "PubMed"],
+    "citations": [
+      {
+        "pmid": "23936387",
+        "title": "A possible mechanism behind autoimmune disorders discovered by genome-wide linkage and association analysis in celiac disease",
+        "journal": "PLoS ONE",
+        "year": 2013,
+        "note": "GWAS of celiac disease; rs2068824 was genotyped as part of the study's SNP panel and is not discussed individually in the paper."
+      }
+    ]
+  }
+}
