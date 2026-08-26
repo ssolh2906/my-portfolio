@@ -181,10 +181,6 @@ const CAVEATS = [
     body: "This page only knows the two rs IDs shown above. Typing a different one does nothing here — the live app (linked above) runs the real pipeline for any rs ID.",
   },
   {
-    title: "A citation link isn't always a finding",
-    body: "rs2068824 has exactly one publication linked to it in dbSNP, and that paper doesn't discuss the variant individually — it was one of many SNPs genotyped in a larger study. Shown here on purpose, since an SNP lookup tool that only ever returns dramatic results would be misleading.",
-  },
-  {
     title: "Not medical or clinical advice",
     body: "Clinical significance labels are pulled from ClinVar as-is and can be conflicting or provisional. This is a bioinformatics summary tool, not a diagnostic one.",
   },
@@ -194,7 +190,7 @@ function CaveatsPanel() {
   return (
     <div className="max-w-[68ch]">
       <p className="text-lg leading-relaxed text-slate-600">
-        Three limits worth knowing before trusting the output above.
+        Two limits worth knowing before trusting the output above.
       </p>
       <ol className="mt-8 grid gap-8">
         {CAVEATS.map((c, i) => (

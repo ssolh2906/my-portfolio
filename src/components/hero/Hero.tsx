@@ -70,15 +70,15 @@ export default function Hero() {
             variants={item}
             className="mt-6 text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl"
           >
-            From biological complexity to scalable solutions.
+            I build machine learning systems for biological data.
           </motion.h1>
 
           <motion.p
             variants={item}
             className="mt-6 max-w-[42ch] text-base leading-relaxed text-slate-600 sm:text-lg"
           >
-            Machine learning built on real biological data, shipped as
-            software people can actually rely on.
+            From research models to production software, built to
+            actually work.
           </motion.p>
 
           <motion.div

@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 
 const STATS = [
-  "GPA 3.96",
+  "GPA 3.94",
   "2× Hackathon Champion",
   "Production app · 100K+ users",
   "MS Bioinformatics",
@@ -50,28 +50,14 @@ export default function About() {
             About
           </motion.span>
 
-          <div className="mt-8 grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
-            <motion.p
-              variants={item}
-              className="max-w-[52ch] text-lg leading-relaxed text-slate-600 lg:col-span-6"
-            >
-              I am an interdisciplinary engineer. Biology poses the
-              questions, computer science provides the tools, and machine
-              learning connects the two. My focus areas are machine
-              learning, bioinformatics, and production software, from a
-              model in a notebook to a system people can rely on.
-            </motion.p>
-
-            <motion.blockquote
-              variants={item}
-              className="border-l-4 border-denim-600 pl-6 lg:col-span-6 lg:col-start-7 lg:pl-8"
-            >
-              <p className="text-2xl font-medium leading-snug tracking-tight text-slate-900 sm:text-3xl lg:text-[2.25rem]">
-                &ldquo;I design leakage-safe evaluations and report honest
-                results &mdash; including the negative ones.&rdquo;
-              </p>
-            </motion.blockquote>
-          </div>
+          <motion.p
+            variants={item}
+            className="mt-8 max-w-[60ch] text-lg leading-relaxed text-slate-600"
+          >
+            My background is bioinformatics. I focus on machine learning
+            and production software &mdash; turning a model in a notebook
+            into a system people can rely on.
+          </motion.p>
 
           <motion.ul
             variants={item}

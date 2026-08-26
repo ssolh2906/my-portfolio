@@ -86,6 +86,47 @@ const PROJECTS: ProjectCardData[] = [
   },
 ];
 
+type GithubProjectData = {
+  title: string;
+  description: string;
+  tags: string[];
+  url: string;
+};
+
+const GITHUB_PROJECTS: GithubProjectData[] = [
+  {
+    title: "gut-pilot",
+    description: "Microbiome analysis platform with an AI agent.",
+    tags: ["JavaScript"],
+    url: "https://github.com/ssolh2906/gut-pilot",
+  },
+  {
+    title: "Analyze_16S",
+    description: "QIIME2 pipeline for analyzing Nanopore 16S rRNA data.",
+    tags: ["Python", "QIIME2"],
+    url: "https://github.com/ssolh2906/Analyze_16S",
+  },
+  {
+    title: "AD-oral-microbiome-pipeline",
+    description:
+      "Snakemake pipeline for oral microbiome sequencing data, from SRA download to processing.",
+    tags: ["Python", "Snakemake"],
+    url: "https://github.com/ssolh2906/AD-oral-microbiome-pipeline",
+  },
+  {
+    title: "Predicting gene expression from histone modifications",
+    description: "SVM model predicting gene expression from histone modification signals.",
+    tags: ["Python", "scikit-learn"],
+    url: "https://github.com/ssolh2906/Predicting-gene-expression-from-histone-modifications",
+  },
+  {
+    title: "Folding-msm",
+    description: "Folding transition networks via Markov state models.",
+    tags: ["Python"],
+    url: "https://github.com/ssolh2906/Folding-msm",
+  },
+];
+
 export default function Projects() {
   const reduceMotion = useReducedMotion();
 
@@ -166,6 +207,53 @@ export default function Projects() {
               </motion.div>
             ))}
           </div>
+
+          <motion.h3
+            variants={item}
+            className="mt-16 text-sm font-medium uppercase tracking-[0.14em] text-slate-500 sm:mt-20"
+          >
+            More on GitHub
+          </motion.h3>
+
+          <motion.div
+            variants={item}
+            className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {GITHUB_PROJECTS.map((repo) => (
+              <a
+                key={repo.url}
+                href={repo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block rounded-2xl border border-slate-200/80 bg-white/70 p-5 backdrop-blur-md transition-colors duration-300 hover:border-slate-300"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <span className="font-medium text-slate-900">
+                    {repo.title}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="shrink-0 text-slate-400 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  >
+                    ↗
+                  </span>
+                </div>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  {repo.description}
+                </p>
+                <ul className="mt-3 flex flex-wrap gap-1.5">
+                  {repo.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className="rounded-full border border-slate-200 px-2 py-0.5 text-xs text-slate-500"
+                    >
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+              </a>
+            ))}
+          </motion.div>
         </motion.div>
       </div>
     </section>

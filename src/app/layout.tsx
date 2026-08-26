@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Solhee Tucker - AI-Assisted Microbiome Analysis",
+  title: "Solhee Tucker - ML / Bioinformatics Engineer",
   description:
-    "Portfolio of Solhee Tucker, an Android engineer building AI-assisted tools for microbiome analysis.",
+    "Portfolio of Solhee Tucker, a machine learning engineer with a bioinformatics background.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
