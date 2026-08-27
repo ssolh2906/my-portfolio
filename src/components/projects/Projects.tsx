@@ -5,6 +5,11 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import { FOLD_CHANGE_ROWS, SUMMARY, shortCellTypeLabel } from "@/lib/sc-covid";
 import { VARIANTS as SNP_VARIANTS } from "@/lib/snp-summary";
+import {
+  SUMMARY as GE_SUMMARY,
+  BEST_MODEL,
+  TOP_FEATURE,
+} from "@/lib/gene-expression";
 
 const container = {
   hidden: {},
@@ -100,6 +105,25 @@ const PROJECTS: ProjectCardData[] = [
       ],
     },
   },
+  {
+    slug: "gene-expression",
+    eyebrow: "Regulatory genomics · ML",
+    title: "Predicting gene expression from histone marks",
+    description:
+      "Histone marks near a gene's TSS carry real signal about how much it's expressed — mostly from one feature. Checked against four regression models to make sure the pattern wasn't a modeling artifact.",
+    tags: ["Python", "scikit-learn", "gene regulation", "ChIP-seq"],
+    stat: {
+      headlineValue: BEST_MODEL.pearson.toFixed(2),
+      headlineLabel: "correlation between predicted and actual expression",
+      subStats: [
+        {
+          value: `${(TOP_FEATURE.importance * 100).toFixed(0)}%`,
+          label: "of the signal from one feature",
+        },
+        { value: GE_SUMMARY.n_features.toLocaleString("en-US"), label: "features per gene" },
+      ],
+    },
+  },
 ];
 
 type GithubProjectData = {
@@ -116,12 +140,6 @@ const GITHUB_PROJECTS: GithubProjectData[] = [
       "Snakemake pipeline for oral microbiome sequencing data, from SRA download to processing.",
     tags: ["Python", "Snakemake"],
     url: "https://github.com/ssolh2906/AD-oral-microbiome-pipeline",
-  },
-  {
-    title: "Predicting gene expression from histone modifications",
-    description: "SVM model predicting gene expression from histone modification signals.",
-    tags: ["Python", "scikit-learn"],
-    url: "https://github.com/ssolh2906/Predicting-gene-expression-from-histone-modifications",
   },
 ];
 

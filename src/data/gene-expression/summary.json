@@ -1,0 +1,1 @@
+{"n_test":8425,"n_features":326,"best_model":"gbr","models":[{"id":"gbr","label":"HistGradientBoosting","mae":0.4837,"r2":0.58,"pearson":0.7628},{"id":"rf","label":"Random Forest","mae":0.4934,"r2":0.5758,"pearson":0.7592},{"id":"svm","label":"SVR (RBF kernel)","mae":0.4998,"r2":0.5461,"pearson":0.7499},{"id":"ridge","label":"Ridge","mae":0.5189,"r2":0.5411,"pearson":0.737}]}
