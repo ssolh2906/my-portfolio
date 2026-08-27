@@ -36,7 +36,7 @@ export default function About() {
         className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-linear-to-b from-denim-50 to-slate-50 sm:h-20 md:h-24"
       />
 
-      <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-16 sm:px-8 sm:pt-20 md:pb-32 md:pt-24 lg:px-12">
+      <div className="relative mx-auto max-w-7xl px-6 pb-14 pt-12 sm:px-8 sm:pt-14 md:pb-16 md:pt-16 lg:px-12">
         <motion.div
           variants={container}
           initial={reduceMotion ? "show" : "hidden"}
@@ -61,7 +61,7 @@ export default function About() {
 
           <motion.ul
             variants={item}
-            className="mt-16 grid grid-cols-1 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200/80 bg-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md sm:mt-20 lg:grid-cols-4 lg:divide-x lg:divide-y-0"
+            className="mt-10 grid grid-cols-1 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200/80 bg-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md sm:mt-12 lg:grid-cols-4 lg:divide-x lg:divide-y-0"
           >
             {STATS.map((stat) => (
               <li

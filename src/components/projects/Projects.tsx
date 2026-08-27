@@ -52,7 +52,7 @@ const PROJECTS: ProjectCardData[] = [
     title: "Gut Pilot: an AI reviewer for microbiome analysis",
     description:
       "A 10-gate, human-in-the-loop pipeline where an AI agent proposes every analysis decision with a citation-backed rationale, and a reviewer confirms or overrides it. Fixed demo on two real datasets — colorectal cancer and Parkinson's disease.",
-    tags: ["FastAPI", "Claude", "React", "16S rRNA"],
+    tags: ["Python", "FastAPI", "Claude", "React", "16S rRNA"],
     stat: {
       headlineValue: "10",
       headlineLabel: "reviewer gates across a 3-layer pipeline",
@@ -111,12 +111,6 @@ type GithubProjectData = {
 
 const GITHUB_PROJECTS: GithubProjectData[] = [
   {
-    title: "Analyze_16S",
-    description: "QIIME2 pipeline for analyzing Nanopore 16S rRNA data.",
-    tags: ["Python", "QIIME2"],
-    url: "https://github.com/ssolh2906/Analyze_16S",
-  },
-  {
     title: "AD-oral-microbiome-pipeline",
     description:
       "Snakemake pipeline for oral microbiome sequencing data, from SRA download to processing.",
@@ -128,12 +122,6 @@ const GITHUB_PROJECTS: GithubProjectData[] = [
     description: "SVM model predicting gene expression from histone modification signals.",
     tags: ["Python", "scikit-learn"],
     url: "https://github.com/ssolh2906/Predicting-gene-expression-from-histone-modifications",
-  },
-  {
-    title: "Folding-msm",
-    description: "Folding transition networks via Markov state models.",
-    tags: ["Python"],
-    url: "https://github.com/ssolh2906/Folding-msm",
   },
 ];
 

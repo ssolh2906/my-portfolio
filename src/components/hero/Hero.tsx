@@ -52,7 +52,7 @@ export default function Hero() {
       {/* soft wash so text stays legible over the artwork on every viewport */}
       <div className="pointer-events-none absolute inset-0 bg-linear-to-r from-denim-50 via-denim-50/55 to-transparent" />
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-16 pt-28 sm:px-8 sm:pb-20 sm:pt-32 lg:px-12">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-10 pt-28 sm:px-8 sm:pb-12 sm:pt-32 lg:px-12">
         <motion.div
           variants={container}
           initial={reduceMotion ? "show" : "hidden"}
