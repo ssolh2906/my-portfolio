@@ -8,10 +8,26 @@ import { MODEL_ROWS, type ModelId } from "@/lib/gene-expression";
 const POINT_COLOR = "#2a78d6";
 const DIAGONAL_COLOR = "#c3c2b7";
 const AXIS_COLOR = "#dadee3";
+const TICK_COLOR = "#9ea5ad";
 
 const PADDING = 36;
 const GRID_CELL = 10; // px bucket for hover hit-testing
 const HOVER_RADIUS = 8; // px
+
+/** Round, evenly-spaced tick values covering [min, max] - not just the raw domain edges. */
+function niceTicks(min: number, max: number, targetCount = 4): number[] {
+  const range = max - min || 1;
+  const rawStep = range / targetCount;
+  const magnitude = Math.pow(10, Math.floor(Math.log10(rawStep)));
+  const normalized = rawStep / magnitude;
+  const step = (normalized < 1.5 ? 1 : normalized < 3 ? 2 : normalized < 7 ? 5 : 10) * magnitude;
+
+  const ticks: number[] = [];
+  for (let v = Math.ceil(min / step) * step; v <= max + step * 1e-6; v += step) {
+    ticks.push(Math.round(v / step) * step);
+  }
+  return ticks;
+}
 
 // Same domain for every model so toggling doesn't rescale the axes underneath you.
 function fillProjection(
@@ -152,6 +168,34 @@ export default function PredictionScatter() {
     ctx.lineTo(PADDING, size - PADDING);
     ctx.stroke();
 
+    // tick marks + numbers, so the plot has some sense of scale
+    const plotSize = size - PADDING * 2;
+    const scale = plotSize / (domain.max - domain.min);
+    const ticks = niceTicks(domain.min, domain.max);
+    ctx.strokeStyle = TICK_COLOR;
+    ctx.fillStyle = TICK_COLOR;
+    ctx.font = "10px system-ui, sans-serif";
+    for (const t of ticks) {
+      const tx = PADDING + (t - domain.min) * scale;
+      const ty = size - PADDING - (t - domain.min) * scale;
+
+      ctx.beginPath();
+      ctx.moveTo(tx, size - PADDING);
+      ctx.lineTo(tx, size - PADDING + 4);
+      ctx.stroke();
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillText(String(t), tx, size - PADDING + 6);
+
+      ctx.beginPath();
+      ctx.moveTo(PADDING - 4, ty);
+      ctx.lineTo(PADDING, ty);
+      ctx.stroke();
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+      ctx.fillText(String(t), PADDING - 7, ty);
+    }
+
     // y = x reference (perfect prediction)
     ctx.strokeStyle = DIAGONAL_COLOR;
     ctx.setLineDash([4, 4]);
@@ -202,6 +246,9 @@ export default function PredictionScatter() {
         ref={containerRef}
         className="relative mt-4 aspect-square w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-white"
       >
+        <span className="pointer-events-none absolute left-2 top-2 text-[10px] text-slate-400">
+          &uarr; Predicted
+        </span>
         {predictions.status === "loading" && (
           <div className="absolute inset-0 flex items-center justify-center text-sm text-slate-400">
             Loading predictions...
@@ -242,10 +289,9 @@ export default function PredictionScatter() {
         )}
       </div>
 
-      <div className="mt-3 flex items-center justify-between text-xs text-slate-400">
-        <span>Actual (z-scored log expression)</span>
-        <span>Predicted &uarr;</span>
-      </div>
+      <p className="mt-3 text-center text-xs text-slate-400">
+        Actual (z-scored log expression) &rarr;
+      </p>
     </div>
   );
 }
