@@ -53,21 +53,27 @@ export type RarefactionRetention = {
   excluded: string[];
 };
 
+// metrics[sample_id][metricName] is null for a sample excluded at the
+// rarefaction depth (see `depth` above) — Compute reports the gap rather
+// than silently omitting the sample or interpolating a value.
 export type AlphaCompute = {
   depth: number;
   n_iterations: number;
-  metrics: Record<string, Record<string, number>>;
-  groups: Record<string, string>;
-  group_tests: Record<string, unknown>;
+  metrics: Record<string, Record<string, number | null>>;
+  groups: Record<string, string[]>; // groupName -> sample ids
+  group_tests: Record<string, { p_value: number; test: string }>;
 };
 
 export type BetaCompute = {
   metric: string;
   metric_mismatch_warning: string | null;
   distance_matrix: { samples: string[]; values: number[][] };
-  pcoa: { coords: number[][]; proportion_explained: number[] };
-  groups: Record<string, string>;
-  permanova: Record<string, unknown>;
+  pcoa: {
+    coords: Record<string, { PC1: number; PC2: number }>;
+    proportion_explained: Record<string, number>; // "PC1".."PCn" -> variance fraction
+  };
+  groups: Record<string, string[]>; // groupName -> sample ids
+  permanova: { r2: number; p: number; permutations: number; dispersion: number; dispersion_p: number };
 };
 
 export type Citation = {
@@ -116,7 +122,7 @@ export type AlphaSignificance = {
   group_summary: Record<string, unknown> | null;
   pairing: string;
   retention_preview: { retained: number; total: number; excluded: string[] };
-  recommendation: { alpha_level: number; correction: string };
+  recommendation: { alpha_level: GateRecommendation; correction: GateRecommendation };
   note: GateNote;
   citation: Citation;
 };
@@ -180,7 +186,7 @@ export type Synthesis = {
   hero_finding: string;
   summary_text: string;
   literature_validation_text: string;
-  limitations: string[];
+  limitations: { title: string; body: string }[];
   next_steps: { title: string; hypothesis: string; experiment: string; citation: string | null }[];
 };
 

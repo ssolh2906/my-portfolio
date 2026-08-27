@@ -47,6 +47,22 @@ const SNP_PAPERS_CITED = Object.values(SNP_VARIANTS).reduce(
 
 const PROJECTS: ProjectCardData[] = [
   {
+    slug: "gut-pilot",
+    eyebrow: "AI agent · Bioinformatics",
+    title: "Gut Pilot: an AI reviewer for microbiome analysis",
+    description:
+      "A 10-gate, human-in-the-loop pipeline where an AI agent proposes every analysis decision with a citation-backed rationale, and a reviewer confirms or overrides it. Fixed demo on two real datasets — colorectal cancer and Parkinson's disease.",
+    tags: ["FastAPI", "Claude", "React", "16S rRNA"],
+    stat: {
+      headlineValue: "10",
+      headlineLabel: "reviewer gates across a 3-layer pipeline",
+      subStats: [
+        { value: "2", label: "real datasets" },
+        { value: "638", label: "samples analyzed" },
+      ],
+    },
+  },
+  {
     slug: "sc-covid",
     eyebrow: "Single-cell genomics",
     title: `Reading COVID-19 in ${SUMMARY.n_cells_total.toLocaleString("en-US")} blood cells`,
@@ -94,12 +110,6 @@ type GithubProjectData = {
 };
 
 const GITHUB_PROJECTS: GithubProjectData[] = [
-  {
-    title: "gut-pilot",
-    description: "Microbiome analysis platform with an AI agent.",
-    tags: ["JavaScript"],
-    url: "https://github.com/ssolh2906/gut-pilot",
-  },
   {
     title: "Analyze_16S",
     description: "QIIME2 pipeline for analyzing Nanopore 16S rRNA data.",
