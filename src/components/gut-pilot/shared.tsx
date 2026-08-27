@@ -2,6 +2,7 @@
 // duplicated per-step so the "card" and "recommendation badge" look stays
 // identical across Design/QC/Normalize/Alpha/Beta/Differential/Summary.
 import type { ReactNode } from "react";
+import type { GutPilotBundle } from "@/lib/gut-pilot";
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <div className={`rounded-2xl border border-slate-200/80 bg-slate-50/60 p-5 ${className}`}>{children}</div>;
@@ -97,6 +98,44 @@ export function SectionHeading({ title, lede }: { title: string; lede: string })
     <div>
       <h3 className="text-lg font-semibold tracking-tight text-slate-900">{title}</h3>
       <p className="mt-1 max-w-[65ch] text-sm text-slate-600">{lede}</p>
+    </div>
+  );
+}
+
+// A persistent "what's this run currently set to" strip — normalization,
+// rarefaction depth, taxonomic rank, group split, and significance
+// settings all in one place, so a reader on Beta or Differential doesn't
+// have to remember or scroll back to what got confirmed on earlier gates.
+const CORRECTION_LABEL: Record<string, string> = { bh: "Benjamini-Hochberg", bonferroni: "Bonferroni", none: "no correction" };
+
+export function RunContextStrip({ bundle }: { bundle: GutPilotBundle }) {
+  const groups = Object.entries(bundle.alpha.groups)
+    .map(([k, ids]) => `${k} ${fmt(ids.length)}`)
+    .join(" · ");
+  const g8 = bundle.alphaSignificance?.recommendation;
+  const correctionId = g8?.correction.option_id;
+
+  const items: { label: string; value: string }[] = [
+    { label: "Normalization", value: bundle.normalizeStrategy.strategy },
+    {
+      label: "Rarefaction depth",
+      value: `${fmt(bundle.rarefactionRetention.depth)} reads (${fmt(bundle.rarefactionRetention.retained.length)} retained)`,
+    },
+    { label: "Rank", value: bundle.designRank?.rank ?? "—" },
+    { label: "Groups", value: groups || "—" },
+    {
+      label: "Significance",
+      value: g8 ? `alpha ${g8.alpha_level.option_id}, ${CORRECTION_LABEL[correctionId!] ?? correctionId}` : "—",
+    },
+  ];
+
+  return (
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 rounded-lg border border-slate-200/80 bg-slate-50/60 px-4 py-2.5 text-xs text-slate-600">
+      {items.map((it) => (
+        <span key={it.label}>
+          <span className="text-slate-400">{it.label}:</span> <b className="font-medium text-slate-800">{it.value}</b>
+        </span>
+      ))}
     </div>
   );
 }

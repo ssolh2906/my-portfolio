@@ -5,7 +5,7 @@ import type { GutPilotBundle } from "@/lib/gut-pilot";
 import { Card, GateNote, Opt, OptRow, RecBadge, SectionHeading, Stat, fmt } from "../shared";
 
 type G1 = {
-  recommendation: { label: string };
+  recommendation: { option_id: string; label: string };
   selected_column: string;
   comparison_levels: string[];
   excluded_levels: string[];
@@ -103,7 +103,12 @@ export default function DesignStep({ bundle, onAdvance }: { bundle: GutPilotBund
           <RecBadge label={g1.recommendation.label} />
         </div>
         <OptRow>
-          <Opt pressed={groupSource === "inferred"} recommended onClick={() => setGroupSource("inferred")} title={g1.selected_column}>
+          <Opt
+            pressed={groupSource === "inferred"}
+            recommended={g1.recommendation.option_id === "metadata"}
+            onClick={() => setGroupSource("inferred")}
+            title={g1.selected_column}
+          >
             {Object.entries(g1.group_counts)
               .map(([k, v]) => `${k} ${fmt(v)}`)
               .join(" · ")}

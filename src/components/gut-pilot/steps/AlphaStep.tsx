@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { GutPilotBundle } from "@/lib/gut-pilot";
-import { Card, GateNote, Opt, OptRow, RecBadge, SectionHeading, Stat } from "../shared";
+import { Card, GateNote, Opt, OptRow, RecBadge, RunContextStrip, SectionHeading, Stat } from "../shared";
 
 const METRICS = ["Observed_taxa", "Shannon", "Simpson", "Chao1", "Pielou_evenness"];
 const ALPHA_LEVELS = [
@@ -36,6 +36,8 @@ export default function AlphaStep({ bundle, onAdvance }: { bundle: GutPilotBundl
         title="Alpha diversity significance (G8)"
         lede="Within-sample diversity, compared between groups — significance level and multiple-testing correction for every test on this page."
       />
+
+      <RunContextStrip bundle={bundle} />
 
       <div>
         <span className="text-xs font-medium text-slate-500">Significance level</span>

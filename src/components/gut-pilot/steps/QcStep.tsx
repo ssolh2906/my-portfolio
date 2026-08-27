@@ -119,6 +119,16 @@ export default function QcStep({ bundle }: { bundle: GutPilotBundle }) {
     const p90 = depths[Math.floor(0.9 * (depths.length - 1))] ?? 10000;
     return Math.max(2000, Math.ceil(p90 / 500) * 500);
   }, [bars]);
+  // The chart's own y-domain — sized to the bottom-24 bars actually drawn
+  // plus this dataset's default floor, not the full slider range (which
+  // runs up to the 90th-percentile depth and would flatten the low bars
+  // this chart exists to show). Fixed per-dataset, not tied to the live
+  // floor, so dragging still only moves the line.
+  const chartMax = useMemo(() => {
+    const sorted = [...bars].sort((a, b) => a.depth - b.depth).slice(0, 24);
+    const localMax = sorted[sorted.length - 1]?.depth ?? defaultFloor;
+    return Math.max(localMax, defaultFloor) * 1.15;
+  }, [bars, defaultFloor]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -135,7 +145,7 @@ export default function QcStep({ bundle }: { bundle: GutPilotBundle }) {
       </dl>
 
       <Card>
-        <DepthBars bars={bars} floor={floor} domainMax={sliderMax} />
+        <DepthBars bars={bars} floor={floor} domainMax={chartMax} />
         <p className="mt-3 text-xs text-slate-500">
           Drag the floor — only the dashed line moves; the flagged count below recomputes live against every real
           sample depth in this run.

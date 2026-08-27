@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 import type { GutPilotBundle } from "@/lib/gut-pilot";
 import { Card, GateNote, RecBadge, SectionHeading, fmt, pct } from "../shared";
-import { useToast } from "../Toast";
 
 const OPTION_COLOR: Record<string, string> = {
   rarefy: "bg-blue-500",
@@ -102,13 +101,17 @@ function RarefactionCurves({ bundle }: { bundle: GutPilotBundle }) {
         </text>
       </svg>
 
-      <div className="mt-4 flex items-center gap-4 rounded-lg bg-slate-50/80 px-3 py-2">
+      <div className="mt-4 flex flex-wrap items-center gap-4 rounded-lg bg-slate-50/80 px-3 py-2">
         {groupNames.map((g) => (
           <span key={g} className="flex items-center gap-1.5 text-xs font-medium text-slate-700">
             <span className="h-2.5 w-2.5 rounded-full" style={{ background: groupColor(g) }} />
             {g}
           </span>
         ))}
+        <span className="flex items-center gap-1.5 border-l border-slate-200 pl-4 text-xs text-slate-400">
+          <span className="h-2.5 w-2.5 rounded-full border border-slate-400" style={{ opacity: 0.4 }} />
+          Excluded at current threshold
+        </span>
       </div>
 
       <div className="mt-4 flex items-center gap-4">
@@ -136,13 +139,31 @@ function RarefactionCurves({ bundle }: { bundle: GutPilotBundle }) {
           Reset to proposal ({fmt(suggested)})
         </button>
       </div>
+
+      <div className="mt-3 flex max-h-40 flex-wrap gap-1 overflow-y-auto rounded-xl border border-slate-200/80 bg-slate-50/60 p-3">
+        {samples.map((s) => {
+          const out = s.depth < threshold;
+          return (
+            <span
+              key={s.id}
+              title={`${s.id} (${s.group}) — ${fmt(s.depth)} reads max${out ? ", excluded at this threshold" : ""}`}
+              className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-mono text-[10px] ${
+                out ? "border-slate-200 text-slate-300" : "border-slate-200 bg-white text-slate-600"
+              }`}
+            >
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: groupColor(s.group), opacity: out ? 0.3 : 1 }} />
+              {s.id}
+            </span>
+          );
+        })}
+      </div>
     </Card>
   );
 }
 
 export default function NormalizeStep({ bundle, onAdvance }: { bundle: GutPilotBundle; onAdvance?: () => void }) {
   const g6 = bundle.normalizeStrategy;
-  const notify = useToast();
+  const [selected, setSelected] = useState(g6.strategy);
 
   return (
     <div className="flex flex-col gap-6">
@@ -161,17 +182,19 @@ export default function NormalizeStep({ bundle, onAdvance }: { bundle: GutPilotB
           const r = o.retention_preview;
           const frac = r.total ? r.retained / r.total : 0;
           const applied = o.option_id === g6.strategy;
+          const isSelected = o.option_id === selected;
           return (
             <button
               key={o.option_id}
               type="button"
-              onClick={() => notify()}
-              className={`rounded-2xl border p-5 text-left transition-colors duration-200 hover:border-blue-300 ${
-                o.option_id === g6.recommendation.option_id ? "border-blue-500 ring-1 ring-blue-500" : "border-slate-200/80"
-              } bg-slate-50/60`}
+              aria-pressed={isSelected}
+              onClick={() => setSelected(o.option_id)}
+              className={`rounded-2xl border p-5 text-left transition-colors duration-200 ${
+                isSelected ? "border-blue-500 bg-blue-50/60" : "border-slate-200/80 bg-slate-50/60 hover:border-blue-300"
+              } ${o.option_id === g6.recommendation.option_id ? "ring-1 ring-amber-400 ring-offset-1" : ""}`}
             >
               <div className="flex items-center justify-between">
-                <b className="text-sm text-slate-900">{o.label}</b>
+                <b className={`text-sm ${isSelected ? "text-blue-700" : "text-slate-900"}`}>{o.label}</b>
                 {applied && <span className="text-[10px] font-semibold tracking-wide text-blue-600 uppercase">Applied</span>}
               </div>
               <p className="mt-1 text-xs text-slate-500">{o.summary}</p>
@@ -185,6 +208,12 @@ export default function NormalizeStep({ bundle, onAdvance }: { bundle: GutPilotB
           );
         })}
       </div>
+      {selected !== g6.strategy && (
+        <p className="text-xs text-slate-500">
+          This run&rsquo;s downstream numbers were computed with <b className="text-slate-900">{g6.strategy}</b> —
+          selecting a different card previews its retention only, it doesn&rsquo;t recompute the rest of the run.
+        </p>
+      )}
 
       <GateNote html={g6.note.message} />
 
