@@ -62,6 +62,19 @@ async function get(pathSuffix) {
   return res.json();
 }
 
+// The real endpoint's distance_matrix is a sample_id -> sample_id -> number
+// nested object — for a 490-sample dataset that repeats every sample id as
+// an object key 490 times (once per row), which is most of the bundle's
+// size (~4MB of a 7.6MB file, measured on crc_baxter). Flattening to a
+// shared id list + a plain 2D array keeps the same information at a
+// fraction of the size, since ids are stored once instead of per-row.
+function compactDistanceMatrix(betaResponse) {
+  const dm = betaResponse.distance_matrix;
+  const samples = Object.keys(dm);
+  const values = samples.map((a) => samples.map((b) => dm[a][b]));
+  return { ...betaResponse, distance_matrix: { samples, values } };
+}
+
 // Calls `fn`, records the result under `key`, and on failure records the
 // error under `_errors[key]` instead of throwing — so one broken gate call
 // (usually a missing ANTHROPIC_API_KEY or missing `paperclip` CLI) doesn't
@@ -93,6 +106,7 @@ async function exportDataset({ dataset, filePath }) {
   await tap(bundle, "rarefactionRetention", () => get(`/session/${sid}/rarefaction/retention`));
   await tap(bundle, "alpha", () => get(`/session/${sid}/alpha`));
   await tap(bundle, "beta", () => get(`/session/${sid}/beta`));
+  if (bundle.beta) bundle.beta = compactDistanceMatrix(bundle.beta);
 
   const daByThreshold = {};
   for (const t of DA_THRESHOLDS) {
@@ -120,7 +134,9 @@ async function main() {
 
   await mkdir(OUT_DIR, { recursive: true });
   const outPath = path.join(OUT_DIR, `${dataset}.json`);
-  await writeFile(outPath, JSON.stringify(bundle, null, 2));
+  // Compact, not pretty — this file is fetched by the browser, never
+  // hand-edited, and indentation whitespace is real bytes on a multi-MB file.
+  await writeFile(outPath, JSON.stringify(bundle));
 
   const errCount = Object.keys(bundle._errors).length;
   console.log(`\nwrote ${outPath}`);
