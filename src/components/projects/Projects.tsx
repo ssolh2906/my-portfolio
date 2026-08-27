@@ -147,7 +147,7 @@ export default function Projects() {
           variants={container}
           initial={reduceMotion ? "show" : "hidden"}
           whileInView="show"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.1 }}
         >
           <motion.h2
             variants={item}
