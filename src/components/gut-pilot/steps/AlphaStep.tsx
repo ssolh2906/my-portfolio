@@ -1,15 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import type { GutPilotBundle } from "@/lib/gut-pilot";
-import { Card, GateNote, RecBadge, SectionHeading, Stat } from "../shared";
-import { useToast } from "../Toast";
+import { Card, GateNote, Opt, OptRow, RecBadge, SectionHeading, Stat } from "../shared";
 
 const METRICS = ["Observed_taxa", "Shannon", "Simpson", "Chao1", "Pielou_evenness"];
-const ALPHA_LEVELS = ["0.01", "0.05", "0.1"];
+const ALPHA_LEVELS = [
+  { v: "0.01", l: "Strict" },
+  { v: "0.05", l: "Convention" },
+  { v: "0.1", l: "Exploratory" },
+];
 const CORRECTIONS = [
-  { id: "bh", label: "Benjamini-Hochberg" },
-  { id: "bonferroni", label: "Bonferroni" },
-  { id: "none", label: "None" },
+  { id: "bh", label: "Benjamini-Hochberg", desc: "Controls FDR" },
+  { id: "bonferroni", label: "Bonferroni", desc: "Controls FWER" },
+  { id: "none", label: "None", desc: "Raw p-values" },
 ];
 
 function groupMean(bundle: GutPilotBundle, metric: string, group: string): number | null {
@@ -19,11 +23,12 @@ function groupMean(bundle: GutPilotBundle, metric: string, group: string): numbe
   return vals.reduce((a, b) => a + b, 0) / vals.length;
 }
 
-export default function AlphaStep({ bundle }: { bundle: GutPilotBundle }) {
-  const notify = useToast();
+export default function AlphaStep({ bundle, onAdvance }: { bundle: GutPilotBundle; onAdvance?: () => void }) {
   const g8 = bundle.alphaSignificance;
   const groupNames = Object.keys(bundle.alpha.groups);
-  const alphaLevel = Number(g8.recommendation.alpha_level.option_id);
+  const [alphaLevel, setAlphaLevel] = useState(g8.recommendation.alpha_level.option_id);
+  const [correction, setCorrection] = useState(g8.recommendation.correction.option_id);
+  const alphaNum = Number(alphaLevel);
 
   return (
     <div className="flex flex-col gap-6">
@@ -32,37 +37,44 @@ export default function AlphaStep({ bundle }: { bundle: GutPilotBundle }) {
         lede="Within-sample diversity, compared between groups — significance level and multiple-testing correction for every test on this page."
       />
 
-      <div className="flex flex-wrap items-center gap-4">
-        <div className="flex items-center gap-1.5">
-          <span className="text-xs text-slate-500">α</span>
+      <div>
+        <span className="text-xs font-medium text-slate-500">Significance level</span>
+        <OptRow>
           {ALPHA_LEVELS.map((lvl) => (
-            <button
-              key={lvl}
-              type="button"
-              onClick={() => notify()}
-              className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors duration-200 hover:border-blue-300 ${
-                lvl === g8.recommendation.alpha_level.option_id ? "border-blue-600 bg-blue-50 text-blue-700" : "border-slate-200 text-slate-500"
-              }`}
+            <Opt
+              key={lvl.v}
+              pressed={alphaLevel === lvl.v}
+              recommended={g8.recommendation.alpha_level.option_id === lvl.v}
+              onClick={() => setAlphaLevel(lvl.v)}
+              title={lvl.l}
             >
-              {lvl}
-            </button>
+              alpha = {lvl.v}
+            </Opt>
           ))}
-        </div>
-        <div className="flex items-center gap-1.5">
-          <span className="text-xs text-slate-500">correction</span>
+        </OptRow>
+      </div>
+
+      <div>
+        <span className="text-xs font-medium text-slate-500">Multiple-testing correction</span>
+        <OptRow>
           {CORRECTIONS.map((c) => (
-            <button
+            <Opt
               key={c.id}
-              type="button"
-              onClick={() => notify()}
-              className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors duration-200 hover:border-blue-300 ${
-                c.id === g8.recommendation.correction.option_id ? "border-blue-600 bg-blue-50 text-blue-700" : "border-slate-200 text-slate-500"
-              }`}
+              pressed={correction === c.id}
+              recommended={g8.recommendation.correction.option_id === c.id}
+              onClick={() => setCorrection(c.id)}
+              title={c.label}
             >
-              {c.label}
-            </button>
+              {c.desc}
+            </Opt>
           ))}
-        </div>
+        </OptRow>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <span className="text-xs text-slate-500">
+          Table below recomputes live at alpha = {alphaLevel} with {CORRECTIONS.find((c) => c.id === correction)?.label}.
+        </span>
         <RecBadge label={`${g8.retention_preview.retained}/${g8.retention_preview.total} retained`} />
       </div>
 
@@ -84,7 +96,7 @@ export default function AlphaStep({ bundle }: { bundle: GutPilotBundle }) {
           <tbody className="divide-y divide-slate-100">
             {METRICS.map((m) => {
               const test = bundle.alpha.group_tests[m];
-              const sig = test && test.p_value < alphaLevel;
+              const sig = test && test.p_value < alphaNum;
               return (
                 <tr key={m}>
                   <td className="px-4 py-2.5 font-medium text-slate-900">{m.replace("_", " ")}</td>
@@ -119,7 +131,7 @@ export default function AlphaStep({ bundle }: { bundle: GutPilotBundle }) {
 
       <button
         type="button"
-        onClick={() => notify()}
+        onClick={() => onAdvance?.()}
         className="self-start rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
       >
         Approve and compute

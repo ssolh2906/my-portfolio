@@ -48,6 +48,50 @@ export function GateNote({ html }: { html: string | null | undefined }) {
   );
 }
 
+// A row of mutually-exclusive selectable option "bubbles" — the same
+// pattern the source app's Gate.jsx Opt/OptRow use for every gate (Design,
+// Alpha significance, ...). `pressed` is the user's current pick;
+// `recommended` marks the reviewer's separate suggestion, so the two can
+// visibly disagree.
+export function OptRow({ children }: { children: ReactNode }) {
+  return <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">{children}</div>;
+}
+
+export function Opt({
+  pressed,
+  recommended,
+  disabled,
+  onClick,
+  title,
+  children,
+}: {
+  pressed?: boolean;
+  recommended?: boolean;
+  disabled?: boolean;
+  onClick?: () => void;
+  title: string;
+  children?: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={!!pressed}
+      disabled={disabled}
+      onClick={onClick}
+      className={`rounded-xl border p-3 text-left transition-colors duration-150 ${
+        disabled
+          ? "cursor-not-allowed border-slate-100 bg-slate-50/60 opacity-50"
+          : pressed
+            ? "border-blue-500 bg-blue-50"
+            : "border-slate-200 bg-slate-50/60 hover:border-blue-300 hover:bg-blue-50/40"
+      } ${recommended ? "ring-1 ring-amber-400 ring-offset-1" : ""}`}
+    >
+      <b className={`block text-[13px] font-semibold ${pressed ? "text-blue-700" : "text-slate-900"}`}>{title}</b>
+      {children && <span className="mt-0.5 block text-xs leading-relaxed text-slate-500">{children}</span>}
+    </button>
+  );
+}
+
 export function SectionHeading({ title, lede }: { title: string; lede: string }) {
   return (
     <div>

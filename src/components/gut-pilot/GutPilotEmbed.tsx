@@ -33,7 +33,9 @@ const STEPS = [
 ] as const;
 type StepId = (typeof STEPS)[number]["id"];
 
-const STEP_COMPONENT: Record<StepId, (props: { bundle: GutPilotBundle }) => React.JSX.Element | null> = {
+type StepProps = { bundle: GutPilotBundle; onAdvance?: () => void };
+
+const STEP_COMPONENT: Record<StepId, (props: StepProps) => React.JSX.Element | null> = {
   upload: UploadStep,
   design: DesignStep,
   qc: QcStep,
@@ -72,6 +74,8 @@ export default function GutPilotEmbed() {
 
   const log = useMemo(() => (bundle ? buildDecisionLog(bundle) : []), [bundle]);
   const StepComponent = STEP_COMPONENT[step];
+  const stepIndex = STEPS.findIndex((s) => s.id === step);
+  const nextStep = STEPS[stepIndex + 1]?.id;
 
   return (
     <>
@@ -145,7 +149,7 @@ export default function GutPilotEmbed() {
         {loading || !bundle ? (
           <div className="flex h-64 items-center justify-center text-sm text-slate-400">Loading run…</div>
         ) : (
-          <StepComponent bundle={bundle} />
+          <StepComponent bundle={bundle} onAdvance={nextStep ? () => setStep(nextStep) : undefined} />
         )}
       </div>
 

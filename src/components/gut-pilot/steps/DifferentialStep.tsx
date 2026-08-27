@@ -3,7 +3,6 @@
 import { useState } from "react";
 import type { GutPilotBundle } from "@/lib/gut-pilot";
 import { GateNote, RecBadge, SectionHeading, Stat, fmt } from "../shared";
-import { useToast } from "../Toast";
 
 const STATUS_STYLE: Record<string, string> = {
   confirmed: "bg-emerald-50 text-emerald-700",
@@ -12,8 +11,7 @@ const STATUS_STYLE: Record<string, string> = {
   not_significant: "bg-slate-100 text-slate-500",
 };
 
-export default function DifferentialStep({ bundle }: { bundle: GutPilotBundle }) {
-  const notify = useToast();
+export default function DifferentialStep({ bundle, onAdvance }: { bundle: GutPilotBundle; onAdvance?: () => void }) {
   const g10 = bundle.daPrevalence;
   const thresholds = Object.keys(bundle.daResultsByThreshold);
   const [threshold, setThreshold] = useState(g10.recommendation.value != null ? String(g10.recommendation.value) : thresholds[1]);
@@ -108,7 +106,7 @@ export default function DifferentialStep({ bundle }: { bundle: GutPilotBundle })
 
       <button
         type="button"
-        onClick={() => notify()}
+        onClick={() => onAdvance?.()}
         className="self-start rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
       >
         Approve and view summary

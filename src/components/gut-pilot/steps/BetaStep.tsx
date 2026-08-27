@@ -49,7 +49,7 @@ function PcoaScatter({ bundle }: { bundle: GutPilotBundle }) {
   );
 }
 
-export default function BetaStep({ bundle }: { bundle: GutPilotBundle }) {
+export default function BetaStep({ bundle, onAdvance }: { bundle: GutPilotBundle; onAdvance?: () => void }) {
   const notify = useToast();
   const g9 = bundle.betaMetric;
   const pn = bundle.beta.permanova;
@@ -113,7 +113,7 @@ export default function BetaStep({ bundle }: { bundle: GutPilotBundle }) {
 
       <button
         type="button"
-        onClick={() => notify()}
+        onClick={() => onAdvance?.()}
         className="self-start rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
       >
         Approve and compute

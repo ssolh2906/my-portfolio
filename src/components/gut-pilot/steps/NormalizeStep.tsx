@@ -92,6 +92,9 @@ function RarefactionCurves({ bundle }: { bundle: GutPilotBundle }) {
           );
         })}
         <line x1={x(threshold)} x2={x(threshold)} y1={T} y2={H - B} stroke="#0f172a" strokeWidth={1.4} strokeDasharray="5 3" />
+        <text x={Math.min(x(threshold) + 5, W - R - 90)} y={T + 10} fontSize="9" fill="#0f172a">
+          threshold {fmt(threshold)}
+        </text>
         <line x1={L} x2={L} y1={T} y2={H - B} stroke="#cbd5e1" />
         <line x1={L} x2={W - R} y1={H - B} y2={H - B} stroke="#cbd5e1" />
         <text x={W - R} y={H - 6} fontSize="9" textAnchor="end" fill="#94a3b8">
@@ -99,10 +102,10 @@ function RarefactionCurves({ bundle }: { bundle: GutPilotBundle }) {
         </text>
       </svg>
 
-      <div className="mt-4 flex items-center gap-4">
+      <div className="mt-4 flex items-center gap-4 rounded-lg bg-slate-50/80 px-3 py-2">
         {groupNames.map((g) => (
-          <span key={g} className="flex items-center gap-1.5 text-xs text-slate-500">
-            <span className="h-2 w-2 rounded-full" style={{ background: groupColor(g) }} />
+          <span key={g} className="flex items-center gap-1.5 text-xs font-medium text-slate-700">
+            <span className="h-2.5 w-2.5 rounded-full" style={{ background: groupColor(g) }} />
             {g}
           </span>
         ))}
@@ -137,7 +140,7 @@ function RarefactionCurves({ bundle }: { bundle: GutPilotBundle }) {
   );
 }
 
-export default function NormalizeStep({ bundle }: { bundle: GutPilotBundle }) {
+export default function NormalizeStep({ bundle, onAdvance }: { bundle: GutPilotBundle; onAdvance?: () => void }) {
   const g6 = bundle.normalizeStrategy;
   const notify = useToast();
 
@@ -208,7 +211,7 @@ export default function NormalizeStep({ bundle }: { bundle: GutPilotBundle }) {
 
       <button
         type="button"
-        onClick={() => notify()}
+        onClick={() => onAdvance?.()}
         className="self-start rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
       >
         Confirm strategy

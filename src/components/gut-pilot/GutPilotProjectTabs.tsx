@@ -87,23 +87,15 @@ function MethodPanel() {
   return (
     <div className="flex max-w-[68ch] flex-col gap-4 text-sm leading-relaxed text-slate-600">
       <p>
-        gut-pilot runs a 3-layer pipeline over a real 16S rRNA count table: <b className="text-slate-900">Compute</b>{" "}
-        (pure Python — pandas/numpy/scipy/scikit-bio, no LLM) produces every number; <b className="text-slate-900">Reasoning</b>{" "}
-        (Claude, via the Anthropic SDK&rsquo;s tool-calling loop) selects and explains, never inventing a number Compute
-        didn&rsquo;t hand it; <b className="text-slate-900">Evidence</b> supplies the thresholds and citations behind
-        each choice, either from a curated table or a live literature search (Paperclip).
+        A 3-layer pipeline over a real 16S rRNA count table: <b className="text-slate-900">Compute</b> (pandas/numpy/scipy/scikit-bio)
+        produces every number, <b className="text-slate-900">Reasoning</b> (Claude) selects and explains without
+        inventing numbers, and <b className="text-slate-900">Evidence</b> supplies the citations behind each choice.
+        Ten decision gates sit across the eight pages above — the reviewer proposes an option with a rationale, a
+        human confirms or overrides it, and every decision lands in the Decision Log.
       </p>
       <p>
-        Ten decision points (&ldquo;gates&rdquo;) sit across eight pages — Upload, Design, Raw QC, Normalize, Alpha,
-        Beta, Differential, Summary — each one a point where the pipeline can&rsquo;t proceed on the model&rsquo;s
-        judgement alone. The reviewer proposes an option with a citation-backed rationale; a human confirms or
-        overrides it. Every decision, human or AI, lands in the Decision Log on the right.
-      </p>
-      <p>
-        This page is a <b className="text-slate-900">fixed demo</b>: both datasets below were run once through the
-        real backend (real ingestion, real statistics, real Claude calls) and the full output was captured as static
-        JSON — nothing here is live or synthetic. Switching datasets swaps which captured run is on screen; nothing is
-        recomputed in your browser.
+        This page is a <b className="text-slate-900">fixed demo</b>: both datasets were run once through the real
+        backend and the output captured as static JSON — nothing is live or recomputed in your browser.
       </p>
       <p className="text-xs text-slate-400">
         Source:{" "}
@@ -126,22 +118,6 @@ function CaveatsPanel() {
     {
       title: "This is a fixed demo, not a live app.",
       body: "gut-pilot's own hosted app isn't in a shareable state yet, so there's no “try the real app” link on this page — only the two captured runs below and the source on GitHub.",
-    },
-    {
-      title: "The chat is real UI, not a real backend.",
-      body: "The “Ask the reviewer” launcher is kept because it's one of the source app's two headline features (alongside the Decision Log), but there's no live model behind it here — opening it explains what it does in the real app instead of answering a question.",
-    },
-    {
-      title: "One bug fixed, one left as a known gap.",
-      body: "While building this demo, I found and fixed a real bug in gut-pilot's normalization gate (its “recommended” badge was hardcoded regardless of the reviewer's actual reasoning — visible on the Parkinson's dataset's Normalize step, where a naive default would have wrongly recommended rarefaction despite losing 94% of samples). A related gap — the rarefaction depth default isn't yet dataset-aware — is left as a documented TODO in the source repo rather than fixed here.",
-    },
-    {
-      title: "The known-taxa cross-check is CRC-specific.",
-      body: "gut-pilot's literature cross-check table was curated for colorectal cancer. Running it against the Parkinson's dataset correctly shows those CRC markers as “not detected” — that's the tool being honest about a reference table that doesn't cover this disease yet, not a bug.",
-    },
-    {
-      title: "Desktop only.",
-      body: "The embedded pipeline is a dense, 8-tab data app — it wasn't worth a cramped mobile layout for a fixed demo, so it's gated to larger screens.",
     },
   ];
   return (
