@@ -1,7 +1,16 @@
+"use client";
+
 import type { GutPilotBundle } from "@/lib/gut-pilot";
 import { Card, GateNote, RecBadge, SectionHeading, Stat } from "../shared";
+import { useToast } from "../Toast";
 
 const METRICS = ["Observed_taxa", "Shannon", "Simpson", "Chao1", "Pielou_evenness"];
+const ALPHA_LEVELS = ["0.01", "0.05", "0.1"];
+const CORRECTIONS = [
+  { id: "bh", label: "Benjamini-Hochberg" },
+  { id: "bonferroni", label: "Bonferroni" },
+  { id: "none", label: "None" },
+];
 
 function groupMean(bundle: GutPilotBundle, metric: string, group: string): number | null {
   const ids = bundle.alpha.groups[group] ?? [];
@@ -11,6 +20,7 @@ function groupMean(bundle: GutPilotBundle, metric: string, group: string): numbe
 }
 
 export default function AlphaStep({ bundle }: { bundle: GutPilotBundle }) {
+  const notify = useToast();
   const g8 = bundle.alphaSignificance;
   const groupNames = Object.keys(bundle.alpha.groups);
   const alphaLevel = Number(g8.recommendation.alpha_level.option_id);
@@ -22,10 +32,37 @@ export default function AlphaStep({ bundle }: { bundle: GutPilotBundle }) {
         lede="Within-sample diversity, compared between groups — significance level and multiple-testing correction for every test on this page."
       />
 
-      <div className="flex items-center justify-between">
-        <b className="text-sm text-slate-900">
-          α = {g8.recommendation.alpha_level.option_id}, {g8.recommendation.correction.label}
-        </b>
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs text-slate-500">α</span>
+          {ALPHA_LEVELS.map((lvl) => (
+            <button
+              key={lvl}
+              type="button"
+              onClick={() => notify()}
+              className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors duration-200 hover:border-blue-300 ${
+                lvl === g8.recommendation.alpha_level.option_id ? "border-blue-600 bg-blue-50 text-blue-700" : "border-slate-200 text-slate-500"
+              }`}
+            >
+              {lvl}
+            </button>
+          ))}
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs text-slate-500">correction</span>
+          {CORRECTIONS.map((c) => (
+            <button
+              key={c.id}
+              type="button"
+              onClick={() => notify()}
+              className={`rounded-full border px-2.5 py-1 text-xs font-medium transition-colors duration-200 hover:border-blue-300 ${
+                c.id === g8.recommendation.correction.option_id ? "border-blue-600 bg-blue-50 text-blue-700" : "border-slate-200 text-slate-500"
+              }`}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
         <RecBadge label={`${g8.retention_preview.retained}/${g8.retention_preview.total} retained`} />
       </div>
 
@@ -79,6 +116,14 @@ export default function AlphaStep({ bundle }: { bundle: GutPilotBundle }) {
           </dl>
         </Card>
       )}
+
+      <button
+        type="button"
+        onClick={() => notify()}
+        className="self-start rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
+      >
+        Approve and compute
+      </button>
     </div>
   );
 }

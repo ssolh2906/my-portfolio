@@ -1,5 +1,8 @@
+"use client";
+
 import type { GutPilotBundle } from "@/lib/gut-pilot";
 import { Card, GateNote, RecBadge, SectionHeading, Stat, fmt } from "../shared";
+import { useToast } from "../Toast";
 
 type G1 = {
   recommendation: { label: string };
@@ -22,6 +25,7 @@ type G3 = {
 };
 
 export default function DesignStep({ bundle }: { bundle: GutPilotBundle }) {
+  const notify = useToast();
   const g1 = bundle.studyDesign.g1 as unknown as G1;
   const g2 = bundle.studyDesign.g2 as unknown as G2;
   const g3 = bundle.studyDesign.g3 as unknown as G3;
@@ -90,19 +94,29 @@ export default function DesignStep({ bundle }: { bundle: GutPilotBundle }) {
           </div>
           <div className="flex gap-2">
             {g4.ranks.map((r) => (
-              <span
+              <button
                 key={r.option_id}
-                className={`rounded-full border px-3 py-1 text-xs font-medium ${
+                type="button"
+                onClick={() => notify()}
+                className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors duration-200 hover:border-blue-300 ${
                   r.option_id === g4.rank ? "border-blue-600 bg-blue-50 text-blue-700" : "border-slate-200 text-slate-500"
                 }`}
               >
                 {r.label} · {fmt(r.feature_count)} features
-              </span>
+              </button>
             ))}
           </div>
           <GateNote html={g4.recommendation.rationale} />
         </div>
       )}
+
+      <button
+        type="button"
+        onClick={() => notify()}
+        className="self-start rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
+      >
+        Confirm design
+      </button>
     </div>
   );
 }

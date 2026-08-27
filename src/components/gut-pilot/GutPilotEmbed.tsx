@@ -11,6 +11,7 @@ import { DATASET_IDS, DATASET_LABELS, loadDataset, type DatasetId, type GutPilot
 import { buildDecisionLog } from "./decisionLog";
 import DecisionLogPanel from "./DecisionLogPanel";
 import FloatingChat from "./FloatingChat";
+import { ToastProvider } from "./Toast";
 import UploadStep from "./steps/UploadStep";
 import DesignStep from "./steps/DesignStep";
 import QcStep from "./steps/QcStep";
@@ -81,6 +82,7 @@ export default function GutPilotEmbed() {
         <p className="mt-1.5 text-xs text-slate-500">Open this page on a laptop or desktop to explore all 8 pipeline steps.</p>
       </div>
       <div className="relative hidden overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm lg:block">
+      <ToastProvider>
       {/* header */}
       <div className="flex flex-wrap items-center gap-3 border-b border-slate-200/80 bg-slate-50/60 px-5 py-3.5">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold tracking-wide text-blue-700 uppercase">
@@ -148,6 +150,7 @@ export default function GutPilotEmbed() {
       </div>
 
       {!loading && bundle && <FloatingChat />}
+      </ToastProvider>
       </div>
     </>
   );

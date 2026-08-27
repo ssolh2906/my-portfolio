@@ -1,7 +1,15 @@
+"use client";
+
 import type { GutPilotBundle } from "@/lib/gut-pilot";
 import { Card, GateNote, RecBadge, SectionHeading, Stat, pct } from "../shared";
+import { useToast } from "../Toast";
 
 const GROUP_COLOR = ["#3b82f6", "#e4734f", "#009a9b", "#8b5cf6"];
+const METRICS = [
+  { id: "bray", label: "Bray-Curtis" },
+  { id: "jaccard", label: "Jaccard" },
+  { id: "aitchison", label: "Aitchison" },
+];
 
 function PcoaScatter({ bundle }: { bundle: GutPilotBundle }) {
   const { coords, proportion_explained } = bundle.beta.pcoa;
@@ -42,6 +50,7 @@ function PcoaScatter({ bundle }: { bundle: GutPilotBundle }) {
 }
 
 export default function BetaStep({ bundle }: { bundle: GutPilotBundle }) {
+  const notify = useToast();
   const g9 = bundle.betaMetric;
   const pn = bundle.beta.permanova;
   const groupNames = Object.keys(bundle.beta.groups);
@@ -53,8 +62,21 @@ export default function BetaStep({ bundle }: { bundle: GutPilotBundle }) {
         lede="What 'different' means between two samples — the metric choice, PERMANOVA test, and the ordination it produces."
       />
 
-      <div className="flex items-center justify-between">
-        <b className="text-sm text-slate-900">Metric: {bundle.beta.metric}</b>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-1.5">
+          {METRICS.map((m) => (
+            <button
+              key={m.id}
+              type="button"
+              onClick={() => notify()}
+              className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors duration-200 hover:border-blue-300 ${
+                m.id === bundle.beta.metric ? "border-blue-600 bg-blue-50 text-blue-700" : "border-slate-200 text-slate-500"
+              }`}
+            >
+              {m.label}
+            </button>
+          ))}
+        </div>
         <RecBadge label={g9.recommendation.label} />
       </div>
 
@@ -88,6 +110,14 @@ export default function BetaStep({ bundle }: { bundle: GutPilotBundle }) {
           {bundle.beta.metric_mismatch_warning}
         </p>
       )}
+
+      <button
+        type="button"
+        onClick={() => notify()}
+        className="self-start rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
+      >
+        Approve and compute
+      </button>
     </div>
   );
 }

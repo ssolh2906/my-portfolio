@@ -1,7 +1,10 @@
+"use client";
+
+import { useMemo, useState } from "react";
 import type { GutPilotBundle } from "@/lib/gut-pilot";
 import { Card, RecBadge, SectionHeading, Stat, fmt } from "../shared";
 
-// Bottom-N by depth, with a dashed floor line — the shape that actually
+// Bottom-N by depth, with a draggable floor line — the shape that actually
 // matters for this gate (is anyone near/under the floor), not a full
 // 490-bar chart that would be unreadable at this size.
 function DepthBars({ bars, floor }: { bars: { sample_id: string; depth: number }[]; floor: number }) {
@@ -14,15 +17,7 @@ function DepthBars({ bars, floor }: { bars: { sample_id: string; depth: number }
 
   return (
     <svg viewBox={`0 0 ${W} ${H + 16}`} className="w-full" role="img" aria-label="Lowest-depth samples">
-      <line
-        x1={0}
-        x2={W}
-        y1={yFor(floor)}
-        y2={yFor(floor)}
-        stroke="#f59e0b"
-        strokeWidth={1.5}
-        strokeDasharray="5 4"
-      />
+      <line x1={0} x2={W} y1={yFor(floor)} y2={yFor(floor)} stroke="#f59e0b" strokeWidth={1.5} strokeDasharray="5 4" />
       <text x={2} y={yFor(floor) - 4} fontSize="9" fill="#b45309">
         floor {fmt(floor)}
       </text>
@@ -52,7 +47,18 @@ function DepthBars({ bars, floor }: { bars: { sample_id: string; depth: number }
 
 export default function QcStep({ bundle }: { bundle: GutPilotBundle }) {
   const { stats, bars } = bundle.qcDepth;
-  const floor = bundle.qcFloor;
+  const defaultFloor = bundle.qcFloor.floor;
+  const [floor, setFloor] = useState(defaultFloor);
+
+  // Recomputed client-side against the real per-sample depths — same
+  // numbers the backend's own qc/floor endpoint would return for this
+  // floor, just done in the browser since we already have every depth.
+  const flagged = useMemo(() => bars.filter((b) => b.depth < floor).map((b) => b.sample_id), [bars, floor]);
+  const sliderMax = useMemo(() => {
+    const depths = bars.map((b) => b.depth).sort((a, b) => a - b);
+    const p90 = depths[Math.floor(0.9 * (depths.length - 1))] ?? 10000;
+    return Math.max(2000, Math.ceil(p90 / 500) * 500);
+  }, [bars]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -69,17 +75,40 @@ export default function QcStep({ bundle }: { bundle: GutPilotBundle }) {
       </dl>
 
       <Card>
-        <DepthBars bars={bars} floor={floor.floor} />
+        <DepthBars bars={bars} floor={floor} />
+        <p className="mt-3 text-xs text-slate-500">
+          Drag the floor — the flagged count below recomputes live against every real sample depth in this run.
+        </p>
+        <div className="mt-3 flex items-center gap-4">
+          <input
+            type="range"
+            min={500}
+            max={sliderMax}
+            step={50}
+            value={floor}
+            aria-label="QC depth floor"
+            onChange={(e) => setFloor(Number(e.target.value))}
+            className="h-2 flex-1 cursor-pointer accent-blue-600"
+          />
+          <span className="w-24 shrink-0 text-right font-mono text-sm font-semibold text-slate-900">{fmt(floor)}</span>
+        </div>
+        <button
+          type="button"
+          onClick={() => setFloor(defaultFloor)}
+          className="mt-2 rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600 transition-colors duration-200 hover:border-blue-300 hover:text-blue-700"
+        >
+          Reset to default ({fmt(defaultFloor)})
+        </button>
       </Card>
 
       <div className="flex items-center justify-between">
-        <b className="text-sm text-slate-900">Floor: {fmt(floor.floor)} reads</b>
-        <RecBadge label={`${floor.n_flagged}/${floor.n_total} flagged`} />
+        <b className="text-sm text-slate-900">Floor: {fmt(floor)} reads</b>
+        <RecBadge label={`${flagged.length}/${bars.length} flagged`} />
       </div>
-      {floor.n_flagged > 0 && (
+      {flagged.length > 0 && (
         <p className="text-xs text-slate-500">
-          Flagged: {floor.flagged.slice(0, 12).join(", ")}
-          {floor.flagged.length > 12 ? ` +${floor.flagged.length - 12} more` : ""}
+          Flagged: {flagged.slice(0, 12).join(", ")}
+          {flagged.length > 12 ? ` +${flagged.length - 12} more` : ""}
         </p>
       )}
     </div>
