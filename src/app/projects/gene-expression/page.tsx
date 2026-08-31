@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import ProjectTabs from "@/components/gene-expression/ProjectTabs";
+import GitHubIcon from "@/components/icons/GitHubIcon";
 import { STATS } from "@/lib/gene-expression";
 
 export const metadata: Metadata = {
@@ -37,11 +38,20 @@ export default function GeneExpressionPage() {
               Predicting gene expression from chromatin state
             </h1>
             <p className="mt-6 max-w-[52ch] text-base leading-relaxed text-slate-600 sm:text-lg">
-              Histone marks near a gene&apos;s promoter carry real signal
-              about how much it&apos;s expressed &mdash; mostly from one
-              mark. Checked against four different regression models to make
-              sure that wasn&apos;t a fluke.
+              Do histone marks near a gene&apos;s promoter actually predict
+              how much it&apos;s expressed? Mostly &mdash; and mostly from
+              one mark. I checked it against four different regression
+              models to make sure that wasn&apos;t a fluke.
             </p>
+            <a
+              href="https://github.com/ssolh2906/Predicting-gene-expression-from-histone-modifications"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/60 px-5 py-2.5 text-sm font-medium text-slate-700 backdrop-blur-sm transition-colors duration-300 hover:border-denim-300 hover:bg-white"
+            >
+              <GitHubIcon />
+              View source on GitHub
+            </a>
           </div>
 
           <dl className="mt-16 grid grid-cols-1 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200/80 bg-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md sm:mt-20 sm:grid-cols-2 lg:grid-cols-4 lg:divide-y-0 lg:divide-x">

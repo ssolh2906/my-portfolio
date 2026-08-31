@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import ProjectTabs from "@/components/snp-summary/ProjectTabs";
+import GitHubIcon from "@/components/icons/GitHubIcon";
 
 export const metadata: Metadata = {
   title: "SNP summary - Solhee Tucker",
@@ -35,9 +36,19 @@ export default function SnpSummaryPage() {
               Turning an rs ID into a bioinformatics summary
             </h1>
             <p className="mt-6 max-w-[52ch] text-base leading-relaxed text-slate-600 sm:text-lg">
-              NCBI and Ensembl data, summarized by Gemini and grounded in real
-              PubMed citations — not the model&apos;s own recall.
+              Give it an rs ID and it pulls NCBI and Ensembl data, then writes
+              a summary grounded in real PubMed citations &mdash; not
+              whatever Gemini remembers.
             </p>
+            <a
+              href="https://github.com/ssolh2906/BIBI_Bioinformatics_hackathon"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/60 px-5 py-2.5 text-sm font-medium text-slate-700 backdrop-blur-sm transition-colors duration-300 hover:border-denim-300 hover:bg-white"
+            >
+              <GitHubIcon />
+              View source on GitHub
+            </a>
           </div>
 
           <div className="mt-16 sm:mt-20">

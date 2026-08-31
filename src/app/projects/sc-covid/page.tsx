@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import ProjectTabs from "@/components/sc-covid/ProjectTabs";
+import GitHubIcon from "@/components/icons/GitHubIcon";
 import { STATS } from "@/lib/sc-covid";
 
 export const metadata: Metadata = {
@@ -37,9 +38,19 @@ export default function ScCovidPage() {
               Reading COVID-19 in 100,000 blood cells
             </h1>
             <p className="mt-6 max-w-[52ch] text-base leading-relaxed text-slate-600 sm:text-lg">
-              COVID-19 blood expands activated effector cells and drains the
-              resting naive and memory pool.
+              In COVID-19 blood, activated effector cells expand and the
+              resting naive and memory pool drains out. I mapped 100,000
+              blood cells to show it.
             </p>
+            <a
+              href="https://github.com/ssolh2906/sc-covid"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/60 px-5 py-2.5 text-sm font-medium text-slate-700 backdrop-blur-sm transition-colors duration-300 hover:border-denim-300 hover:bg-white"
+            >
+              <GitHubIcon />
+              View source on GitHub
+            </a>
           </div>
 
           <dl className="mt-16 grid grid-cols-1 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200/80 bg-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md sm:mt-20 sm:grid-cols-2 lg:grid-cols-4 lg:divide-y-0 lg:divide-x">

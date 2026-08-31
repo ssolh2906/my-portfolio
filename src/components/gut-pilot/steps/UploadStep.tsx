@@ -18,6 +18,30 @@ export default function UploadStep({ bundle }: { bundle: GutPilotBundle }) {
 
   return (
     <div className="flex flex-col gap-5">
+      {/* Styled to read as "file already dropped in and validated", using
+          only real parse_report fields — no invented filename, since this
+          is a fixed demo rather than a live upload. */}
+      <div className="flex items-center gap-4 rounded-2xl border border-emerald-200 bg-emerald-50/50 p-4">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-emerald-600 shadow-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-5 w-5">
+            <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" strokeLinejoin="round" />
+            <path d="M14 3v5h5" strokeLinejoin="round" />
+          </svg>
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium text-slate-900">16S rRNA count table &middot; MicrobiomeHD format</p>
+          <p className="mt-0.5 text-xs text-slate-500">
+            {pr.n_samples.toLocaleString("en-US")} samples &middot; {pr.n_features.toLocaleString("en-US")} raw OTU features
+          </p>
+        </div>
+        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" className="h-3 w-3">
+            <path d="M5 12.5 9.5 17 19 7" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Uploaded
+        </span>
+      </div>
+
       <div>
         <h3 className="text-lg font-semibold tracking-tight text-slate-900">Real ingestion, not simulated</h3>
         <p className="mt-1 max-w-[65ch] text-sm text-slate-600">

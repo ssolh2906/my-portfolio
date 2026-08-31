@@ -3,10 +3,10 @@
 import { motion, useReducedMotion } from "framer-motion";
 
 const STATS = [
-  "GPA 3.94",
+  "MS Bioinformatics",
+  "BS in CS & Biotech",
   "2× Hackathon Champion",
   "Production app · 100K+ users",
-  "MS Bioinformatics",
 ];
 
 const container = {
@@ -54,9 +54,9 @@ export default function About() {
             variants={item}
             className="mt-8 max-w-[60ch] text-lg leading-relaxed text-slate-600"
           >
-            My background is bioinformatics. I focus on machine learning
-            and production software &mdash; turning a model in a notebook
-            into a system people can rely on.
+            I build AI tools for bioinformatics that are backed by real
+            data, not just plausible-sounding output &mdash; with a solid
+            software engineering background behind them.
           </motion.p>
 
           <motion.ul

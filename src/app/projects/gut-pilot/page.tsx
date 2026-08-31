@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import GutPilotProjectTabs from "@/components/gut-pilot/GutPilotProjectTabs";
+import GitHubIcon from "@/components/icons/GitHubIcon";
 
 export const metadata: Metadata = {
   title: "Gut Pilot: an AI reviewer for microbiome analysis - Solhee Tucker",
@@ -43,10 +44,19 @@ export default function GutPilotPage() {
               Gut Pilot: an AI reviewer for microbiome analysis
             </h1>
             <p className="mt-6 max-w-[58ch] text-base leading-relaxed text-slate-600 sm:text-lg">
-              A microbiome analysis pipeline where an AI agent proposes every methodological decision — normalization,
-              distance metric, significance settings — with a citation-backed rationale, and a human reviewer confirms
-              or overrides it. Every call, human or AI, lands in an audit trail.
+              An AI agent proposes every methodological call in a microbiome analysis &mdash; normalization,
+              distance metric, significance level &mdash; and backs each one with a citation. I review every call,
+              confirm or override it, and it lands in an audit trail either way.
             </p>
+            <a
+              href="https://github.com/ssolh2906/gut-pilot"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/60 px-5 py-2.5 text-sm font-medium text-slate-700 backdrop-blur-sm transition-colors duration-300 hover:border-denim-300 hover:bg-white"
+            >
+              <GitHubIcon />
+              View source on GitHub
+            </a>
           </div>
 
           <dl className="mt-16 grid grid-cols-1 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200/80 bg-white/70 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md sm:mt-20 sm:grid-cols-2 lg:grid-cols-4 lg:divide-y-0 lg:divide-x">

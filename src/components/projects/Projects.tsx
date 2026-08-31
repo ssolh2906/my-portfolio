@@ -67,6 +67,44 @@ const PROJECTS: ProjectCardData[] = [
       ],
     },
   },
+
+  {
+    slug: "gene-expression",
+    eyebrow: "Regulatory genomics · ML",
+    title: "Predicting gene expression from histone marks",
+    description:
+      "Histone marks near a gene's TSS carry real signal about how much it's expressed — mostly from one feature. Checked against four regression models to make sure the pattern wasn't a modeling artifact.",
+    tags: ["Python", "scikit-learn", "gene regulation", "ChIP-seq"],
+    stat: {
+      headlineValue: BEST_MODEL.pearson.toFixed(2),
+      headlineLabel: "correlation between predicted and actual expression",
+      subStats: [
+        {
+          value: `${(TOP_FEATURE.importance * 100).toFixed(0)}%`,
+          label: "of the signal from one feature",
+        },
+        { value: GE_SUMMARY.n_features.toLocaleString("en-US"), label: "features per gene" },
+      ],
+    },
+  },
+
+  {
+    slug: "snp-summary",
+    eyebrow: "Bioinformatics · LLM summaries",
+    title: "Turning an rs ID into a bioinformatics summary",
+    description:
+      "NCBI and Ensembl data, summarized and grounded in real PubMed citations rather than model recall. A fixed demo of a bioinformatics-hackathon pipeline.",
+    tags: ["NCBI", "Ensembl", "PubMed", "Next.js"],
+    stat: {
+      headlineValue: String(RS6311.dbsnpCitationCount),
+      headlineLabel: "studies linked to rs6311 in dbSNP",
+      subStats: [
+        { value: String(Object.keys(SNP_VARIANTS).length), label: "example variants" },
+        { value: String(SNP_PAPERS_CITED), label: "papers cited" },
+      ],
+    },
+  },
+
   {
     slug: "sc-covid",
     eyebrow: "Single-cell genomics",
@@ -89,41 +127,6 @@ const PROJECTS: ProjectCardData[] = [
       ],
     },
   },
-  {
-    slug: "snp-summary",
-    eyebrow: "Bioinformatics · LLM summaries",
-    title: "Turning an rs ID into a bioinformatics summary",
-    description:
-      "NCBI and Ensembl data, summarized and grounded in real PubMed citations rather than model recall. A fixed demo of a bioinformatics-hackathon pipeline.",
-    tags: ["NCBI", "Ensembl", "PubMed", "Next.js"],
-    stat: {
-      headlineValue: String(RS6311.dbsnpCitationCount),
-      headlineLabel: "studies linked to rs6311 in dbSNP",
-      subStats: [
-        { value: String(Object.keys(SNP_VARIANTS).length), label: "example variants" },
-        { value: String(SNP_PAPERS_CITED), label: "papers cited" },
-      ],
-    },
-  },
-  {
-    slug: "gene-expression",
-    eyebrow: "Regulatory genomics · ML",
-    title: "Predicting gene expression from histone marks",
-    description:
-      "Histone marks near a gene's TSS carry real signal about how much it's expressed — mostly from one feature. Checked against four regression models to make sure the pattern wasn't a modeling artifact.",
-    tags: ["Python", "scikit-learn", "gene regulation", "ChIP-seq"],
-    stat: {
-      headlineValue: BEST_MODEL.pearson.toFixed(2),
-      headlineLabel: "correlation between predicted and actual expression",
-      subStats: [
-        {
-          value: `${(TOP_FEATURE.importance * 100).toFixed(0)}%`,
-          label: "of the signal from one feature",
-        },
-        { value: GE_SUMMARY.n_features.toLocaleString("en-US"), label: "features per gene" },
-      ],
-    },
-  },
 ];
 
 type GithubProjectData = {
@@ -133,14 +136,16 @@ type GithubProjectData = {
   url: string;
 };
 
+// Not pushed yet - push the repo, then move this back into the array to
+// bring the "More on GitHub" section back.
 const GITHUB_PROJECTS: GithubProjectData[] = [
-  {
-    title: "AD-oral-microbiome-pipeline",
-    description:
-      "Snakemake pipeline for oral microbiome sequencing data, from SRA download to processing.",
-    tags: ["Python", "Snakemake"],
-    url: "https://github.com/ssolh2906/AD-oral-microbiome-pipeline",
-  },
+  // {
+  //   title: "AD-oral-microbiome-pipeline",
+  //   description:
+  //     "Snakemake pipeline for oral microbiome sequencing data, from SRA download to processing.",
+  //   tags: ["Python", "Snakemake"],
+  //   url: "https://github.com/ssolh2906/AD-oral-microbiome-pipeline",
+  // },
 ];
 
 export default function Projects() {
@@ -224,6 +229,8 @@ export default function Projects() {
             ))}
           </div>
 
+          {GITHUB_PROJECTS.length > 0 && (
+          <>
           <motion.h3
             variants={item}
             className="mt-16 text-sm font-medium uppercase tracking-[0.14em] text-slate-500 sm:mt-20"
@@ -270,6 +277,8 @@ export default function Projects() {
               </a>
             ))}
           </motion.div>
+          </>
+          )}
         </motion.div>
       </div>
     </section>
