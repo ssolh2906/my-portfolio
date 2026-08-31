@@ -1,5 +1,6 @@
 const NAV_LINKS = [
-  { label: "About", href: "#about" },
+  // About section is commented out on the page for now - re-add
+  // { label: "About", href: "#about" } here when it comes back.
   { label: "Projects", href: "#projects" },
   { label: "Contact", href: "#contact" },
 ];

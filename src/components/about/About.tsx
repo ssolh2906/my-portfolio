@@ -54,9 +54,8 @@ export default function About() {
             variants={item}
             className="mt-8 max-w-[60ch] text-lg leading-relaxed text-slate-600"
           >
-            I build AI tools for bioinformatics that are backed by real
-            data, not just plausible-sounding output &mdash; with a solid
-            software engineering background behind them.
+          Curious, courageous, and candid. 
+          Excited to blend the two fields I love, bringing something that makes real difference.
           </motion.p>
 
           <motion.ul
