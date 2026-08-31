@@ -159,20 +159,20 @@ function OverviewPanel() {
 
       <div>
         <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
-          What this does &mdash; and doesn&apos;t &mdash; explain
+          What this does & and doesn&apos;t explain
         </h2>
         <Bullets
           items={[
             <>
               Best model ({BEST_MODEL.label}): R&sup2; {BEST_MODEL.r2.toFixed(3)}, r{" "}
-              {BEST_MODEL.pearson.toFixed(3)} &mdash; about {(BEST_MODEL.r2 * 100).toFixed(0)}% of
+              {BEST_MODEL.pearson.toFixed(3)}. About {(BEST_MODEL.r2 * 100).toFixed(0)}% of
               the variance
             </>,
             <>
               The rest: transcription factor binding, enhancer looping, RNA stability,
               other post-transcriptional control
             </>,
-            <>Target is 1 ENCODE sample, no replicates &mdash; some of that gap is probably noise, not biology</>,
+            <>Target is 1 ENCODE sample, no replicates. Some of that gap is probably noise, not biology</>,
           ]}
         />
       </div>
