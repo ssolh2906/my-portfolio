@@ -45,7 +45,7 @@ export default function UploadStep({ bundle }: { bundle: GutPilotBundle }) {
       <div>
         <h3 className="text-lg font-semibold tracking-tight text-slate-900">Real ingestion, not simulated</h3>
         <p className="mt-1 max-w-[65ch] text-sm text-slate-600">
-          A genuine MicrobiomeHD-format count table was parsed server-side for this run — the numbers below are
+          A genuine MicrobiomeHD-format count table was parsed server-side for this run. The numbers below are
           gut-pilot&rsquo;s own validation report, not placeholder text.
         </p>
       </div>

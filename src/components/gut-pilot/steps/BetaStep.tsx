@@ -195,7 +195,7 @@ export default function BetaStep({ bundle, onAdvance }: { bundle: GutPilotBundle
     <div className="flex flex-col gap-6">
       <SectionHeading
         title="Beta diversity distance metric (G9)"
-        lede="What 'different' means between two samples — the metric choice, PERMANOVA test, and the ordination it produces."
+        lede="What 'different' means between two samples: the metric choice, PERMANOVA test, and the ordination it produces."
       />
 
       <RunContextStrip bundle={bundle} />

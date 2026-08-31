@@ -107,9 +107,9 @@ function OverviewPanel() {
   return (
     <div className="grid gap-10">
       <p className="max-w-[62ch] text-lg leading-relaxed text-slate-600">
-        Enter an rs ID and the original app pulls variant data from NCBI and
-        Ensembl, then asks Gemini to write a bioinformatician-facing summary —
-        grounded in real PubMed abstracts rather than the model&apos;s own
+        Enter an rs ID. The original app pulls variant data from NCBI and
+        Ensembl, then asks Gemini to write a summary for bioinformaticians,
+        grounded in real PubMed abstracts instead of the model&apos;s own
         recall. Below is that pipeline&apos;s real output for two example
         variants.
       </p>
@@ -126,14 +126,14 @@ function MethodPanel() {
         Variant facts come live from the NCBI Variation Services API and
         Ensembl&apos;s VEP/REST endpoints: gene, consequence, GRCh38 position,
         alleles, population frequencies, and ClinVar significance. Literature
-        comes from PubMed — the rs ID is used to pull the publications dbSNP
+        comes from PubMed. The rs ID is used to pull the publications dbSNP
         already links to that variant, and their abstracts (not just titles)
         are what the summary is grounded in.
       </Block>
 
       <Block title="Why this page is a fixed demo">
         The live app runs a Streamlit + Gemini backend that needs a server
-        process and an API key — not something to expose on a static
+        process and an API key, not something to expose on a static
         portfolio site. Rather than rebuild that backend as a Vercel function
         that calls paid APIs on every visitor, this page ships the same
         pipeline&apos;s real output for two rs IDs, precomputed once. The
@@ -142,11 +142,11 @@ function MethodPanel() {
 
       <Block title="Grounding the citations">
         The original hackathon build asked Gemini to &quot;do deeper research&quot;
-        on any citations it found — with no retrieval step, that&apos;s an
+        on any citations it found. With no retrieval step, that&apos;s an
         open invitation to hallucinate a paper&apos;s findings. Here, the
         citation list is real PubMed metadata fetched directly, so every
-        paper button links to an abstract that actually exists and actually
-        mentions the variant.
+        paper button links to an abstract that exists and mentions the
+        variant.
       </Block>
 
       <Block title="Reproduce">
@@ -178,7 +178,7 @@ function MethodPanel() {
 const CAVEATS = [
   {
     title: "Fixed inputs, not a live lookup",
-    body: "This page only knows the two rs IDs shown above. Typing a different one does nothing here — the live app (linked above) runs the real pipeline for any rs ID.",
+    body: "This page only knows the two rs IDs shown above. Typing a different one does nothing here. The live app (linked above) runs the real pipeline for any rs ID.",
   },
   {
     title: "Not medical or clinical advice",

@@ -7,7 +7,7 @@
 // silently doing nothing or faking a recompute.
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 
-const DEFAULT_MESSAGE = "Fixed demo — this control isn't wired to a live backend here.";
+const DEFAULT_MESSAGE = "Fixed demo. This control isn't wired to a live backend here.";
 
 const ToastCtx = createContext<((message?: string) => void) | null>(null);
 

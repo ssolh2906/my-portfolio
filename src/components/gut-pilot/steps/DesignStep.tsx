@@ -83,7 +83,7 @@ export default function DesignStep({ bundle, onAdvance }: { bundle: GutPilotBund
 
   const g1Note =
     groupSource === "none"
-      ? "<b>Single-cohort mode.</b> Every group comparison is switched off: alpha diversity group tests, PERMANOVA, and differential abundance. The descriptive panels still run — depth, composition, per-sample alpha, and the distance matrix all stay available."
+      ? "<b>Single-cohort mode.</b> Every group comparison is switched off: alpha diversity group tests, PERMANOVA, and differential abundance. The descriptive panels still run: depth, composition, per-sample alpha, and the distance matrix all stay available."
       : groupSource === "manual"
         ? `Manual assignment. Click any sample to move it between groups. Current split: ${Object.entries(manualCounts)
             .map(([k, v]) => `<b>${k} ${v}</b>`)
@@ -94,7 +94,7 @@ export default function DesignStep({ bundle, onAdvance }: { bundle: GutPilotBund
     <div className="flex flex-col gap-6">
       <SectionHeading
         title="Study design (G1–G4)"
-        lede="Four gates decide what's actually being compared, before any diversity or abundance number is computed."
+        lede="Four gates decide what's being compared, before any diversity or abundance number is computed."
       />
 
       <div>

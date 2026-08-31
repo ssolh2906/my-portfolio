@@ -134,7 +134,7 @@ export default function QcStep({ bundle }: { bundle: GutPilotBundle }) {
     <div className="flex flex-col gap-6">
       <SectionHeading
         title="Raw QC (G5)"
-        lede="Flags under-sequenced samples against a depth floor — flags only, never excludes. Exclusion happens at Normalize (G7), if at all."
+        lede="Flags under-sequenced samples against a depth floor. Flags only, never excludes. Exclusion happens at Normalize (G7), if at all."
       />
 
       <dl className="grid grid-cols-2 gap-x-6 gap-y-4 rounded-2xl border border-slate-200/80 bg-slate-50/60 p-5 sm:grid-cols-4">
@@ -147,7 +147,7 @@ export default function QcStep({ bundle }: { bundle: GutPilotBundle }) {
       <Card>
         <DepthBars bars={bars} floor={floor} domainMax={chartMax} />
         <p className="mt-3 text-xs text-slate-500">
-          Drag the floor — only the dashed line moves; the flagged count below recomputes live against every real
+          Drag the floor. Only the dashed line moves. The flagged count below recomputes live against every real
           sample depth in this run.
         </p>
         <div className="mt-3 flex items-center gap-4">

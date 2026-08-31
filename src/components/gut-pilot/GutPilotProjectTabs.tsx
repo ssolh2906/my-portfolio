@@ -102,15 +102,15 @@ type Gate = { id: string; stage: string; title: string; desc: string };
 // DifferentialStep) — this is the same 10-gate structure, just laid out so
 // it can be read at a glance instead of clicked through one page at a time.
 const GATES: Gate[] = [
-  { id: "G1", stage: "Design", title: "Comparison groups", desc: "Which metadata column and levels define what's actually being compared" },
+  { id: "G1", stage: "Design", title: "Comparison groups", desc: "Which metadata column and levels define what's being compared" },
   { id: "G2", stage: "Design", title: "Batch handling", desc: "Model batch as a covariate, stratify by it, or proceed and flag the risk" },
   { id: "G3", stage: "Design", title: "Pairing", desc: "Independent samples, or paired / repeated measures" },
-  { id: "G4", stage: "Design", title: "Taxonomic rank", desc: "Which rank — and how many features — the rest of the run is computed at" },
+  { id: "G4", stage: "Design", title: "Taxonomic rank", desc: "Which taxonomic rank the run is computed at, and how many features that gives you" },
   { id: "G5", stage: "Raw QC", title: "Depth floor", desc: "Flags under-sequenced samples against a minimum read depth (flags only, never excludes)" },
-  { id: "G6", stage: "Normalize", title: "Normalization strategy", desc: "Rarefaction, CSS, or CLR — the least methodologically settled step in the pipeline" },
+  { id: "G6", stage: "Normalize", title: "Normalization strategy", desc: "Rarefaction, CSS, or CLR. The least settled step in the pipeline" },
   { id: "G7", stage: "Normalize", title: "Rarefaction depth", desc: "The depth threshold that decides which samples get excluded" },
   { id: "G8", stage: "Alpha diversity", title: "Significance", desc: "Alpha level and multiple-testing correction for every diversity test" },
-  { id: "G9", stage: "Beta diversity", title: "Distance metric", desc: "Bray-Curtis, Jaccard, or Aitchison — what \"different\" means between two samples" },
+  { id: "G9", stage: "Beta diversity", title: "Distance metric", desc: "Bray-Curtis, Jaccard, or Aitchison. What \"different\" means between two samples" },
   { id: "G10", stage: "Differential abundance", title: "Prevalence filter", desc: "How many features get tested, and how strict the correction has to be" },
 ];
 
@@ -171,16 +171,16 @@ function MethodPanel() {
 
       <div>
         <p className="mb-5">
-          Ten decision gates sit across those pages — at each one, the reviewer proposes an option with a
-          citation-backed rationale, a human confirms or overrides it, and the call lands in the Decision Log either
-          way. Here&rsquo;s what each gate actually decides:
+          Ten decision gates sit across those pages. At each one, the reviewer proposes an option with a
+          citation-backed rationale, then a human confirms or overrides it. Either way, the call lands in the
+          Decision Log. Here&rsquo;s what each gate decides:
         </p>
         <GatesDiagram />
       </div>
 
       <p>
-        This page is a <b className="text-slate-900">fixed demo</b>: both datasets were run once through the real
-        backend and the output captured as static JSON — nothing is live or recomputed in your browser.
+        This page is a <b className="text-slate-900">fixed demo</b>. Both datasets were run once through the real
+        backend, and the output was captured as static JSON. Nothing is live or recomputed in your browser.
       </p>
       <p className="text-xs text-slate-400">
         Source:{" "}
@@ -202,7 +202,7 @@ function CaveatsPanel() {
   const items = [
     {
       title: "This is a fixed demo, not a live app.",
-      body: "To keep this portfolio site light, there's no “try it live” version embedded here — just the two captured runs above, built from real backend output. Full source is on GitHub.",
+      body: "To keep this portfolio site light, there's no “try it live” version embedded here. Just the two captured runs above, built from real backend output, plus the full source on GitHub.",
     },
   ];
   return (

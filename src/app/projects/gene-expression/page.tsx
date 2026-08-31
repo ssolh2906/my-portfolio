@@ -8,7 +8,7 @@ import { STATS } from "@/lib/gene-expression";
 export const metadata: Metadata = {
   title: "Predicting Gene Expression from Histone Marks - Solhee Tucker",
   description:
-    "Do histone marks near a gene's TSS actually predict how much it's expressed? Mostly from one signal, H3K4me3, right at the promoter - checked against four regression models.",
+    "Histone marks near a gene's TSS predict how much it's expressed, mostly from one signal, H3K4me3, right at the promoter. Checked against four regression models.",
 };
 
 export default function GeneExpressionPage() {
@@ -38,10 +38,9 @@ export default function GeneExpressionPage() {
               Predicting gene expression from chromatin state
             </h1>
             <p className="mt-6 max-w-[52ch] text-base leading-relaxed text-slate-600 sm:text-lg">
-              Do histone marks near a gene&apos;s promoter actually predict
-              how much it&apos;s expressed? Mostly &mdash; and mostly from
-              one mark. I checked it against four different regression
-              models to make sure that wasn&apos;t a fluke.
+              Histone marks near a gene&apos;s promoter predict how much
+              it&apos;s expressed, mostly from one mark. I checked it
+              against four regression models to rule out a fluke.
             </p>
             <a
               href="https://github.com/ssolh2906/Predicting-gene-expression-from-histone-modifications"

@@ -36,9 +36,9 @@ export default function SnpSummaryPage() {
               Turning an rs ID into a bioinformatics summary
             </h1>
             <p className="mt-6 max-w-[52ch] text-base leading-relaxed text-slate-600 sm:text-lg">
-              Give it an rs ID and it pulls NCBI and Ensembl data, then writes
-              a summary grounded in real PubMed citations &mdash; not
-              whatever Gemini remembers.
+              Give it an rs ID. It pulls NCBI and Ensembl data, then writes a
+              summary grounded in real PubMed citations instead of whatever
+              Gemini remembers.
             </p>
             <a
               href="https://github.com/ssolh2906/BIBI_Bioinformatics_hackathon"

@@ -161,8 +161,8 @@ function MethodPanel() {
       <Block title="Quality check">
         The embedding had no missing values across all 100,000 cells. Cells
         came from 18 different sequencing assays, but the UMAP structures by
-        cell identity rather than by assay, which is what confirms the batch
-        correction actually held.
+        cell identity rather than by assay, which confirms the batch
+        correction held.
       </Block>
 
       <Block title="Reproduce">

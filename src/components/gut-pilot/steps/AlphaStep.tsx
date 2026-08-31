@@ -34,7 +34,7 @@ export default function AlphaStep({ bundle, onAdvance }: { bundle: GutPilotBundl
     <div className="flex flex-col gap-6">
       <SectionHeading
         title="Alpha diversity significance (G8)"
-        lede="Within-sample diversity, compared between groups — significance level and multiple-testing correction for every test on this page."
+        lede="Within-sample diversity, compared between groups. Significance level and multiple-testing correction for every test on this page."
       />
 
       <RunContextStrip bundle={bundle} />

@@ -7,12 +7,12 @@ import GitHubIcon from "@/components/icons/GitHubIcon";
 export const metadata: Metadata = {
   title: "Gut Pilot: an AI reviewer for microbiome analysis - Solhee Tucker",
   description:
-    "A 10-gate, human-in-the-loop pipeline that reviews microbiome analysis decisions against the literature — fixed demo on two real datasets.",
+    "A 10-gate, human-in-the-loop pipeline that reviews microbiome analysis decisions against the literature. Fixed demo on two real datasets.",
 };
 
 const STATS = [
   { value: "10", label: "Reviewer gates", detail: "Points where the pipeline can't proceed on the model's judgement alone" },
-  { value: "3", label: "Layers", detail: "Compute, Reasoning, and Evidence — kept strictly separate" },
+  { value: "3", label: "Layers", detail: "Compute, Reasoning, and Evidence, kept strictly separate" },
   { value: "2", label: "Real datasets", detail: "Colorectal cancer and Parkinson's disease, run through the real backend" },
   { value: "638", label: "Samples analyzed", detail: "490 + 148 samples across both captured runs" },
 ];
@@ -44,9 +44,9 @@ export default function GutPilotPage() {
               Gut Pilot: an AI reviewer for microbiome analysis
             </h1>
             <p className="mt-6 max-w-[58ch] text-base leading-relaxed text-slate-600 sm:text-lg">
-              An AI agent proposes every methodological call in a microbiome analysis &mdash; normalization,
-              distance metric, significance level &mdash; and backs each one with a citation. I review every call,
-              confirm or override it, and it lands in an audit trail either way.
+              An AI agent proposes every methodological call in a microbiome analysis: normalization, distance
+              metric, significance level. Each one comes with a citation. I review it, confirm or override, and it
+              lands in an audit trail.
             </p>
             <a
               href="https://github.com/ssolh2906/gut-pilot"

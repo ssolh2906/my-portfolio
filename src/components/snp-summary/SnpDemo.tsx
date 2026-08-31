@@ -39,7 +39,7 @@ export default function SnpDemo() {
           Fixed demo
         </span>
         <p className="text-sm text-slate-500">
-          Precomputed output for two example variants — no live API calls on
+          Precomputed output for two example variants. No live API calls on
           this page.{" "}
           <a
             href={LIVE_APP_URL}

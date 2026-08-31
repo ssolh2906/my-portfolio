@@ -59,7 +59,7 @@ function RarefactionCurves({ bundle }: { bundle: GutPilotBundle }) {
         <span className="text-xs text-slate-500">{fmt(samples.length)} samples, real per-sample curves</span>
       </div>
       <p className="mt-1 text-xs text-slate-500">
-        Drag the threshold — dimmed curves fall below it and would be excluded at that depth. This recomputes live
+        Drag the threshold. Dimmed curves fall below it and would be excluded at that depth. This recomputes live
         against the real per-sample data, no different from the source app.
       </p>
 
@@ -169,7 +169,7 @@ export default function NormalizeStep({ bundle, onAdvance }: { bundle: GutPilotB
     <div className="flex flex-col gap-6">
       <SectionHeading
         title="Normalization strategy (G6)"
-        lede="The least methodologically settled step in the pipeline — rarefaction, CSS, and CLR each trade off differently, and the literature genuinely disagrees."
+        lede="The least methodologically settled step in the pipeline. Rarefaction, CSS, and CLR each trade off differently, and the literature disagrees."
       />
 
       <div className="flex items-center justify-between">
@@ -210,8 +210,8 @@ export default function NormalizeStep({ bundle, onAdvance }: { bundle: GutPilotB
       </div>
       {selected !== g6.strategy && (
         <p className="text-xs text-slate-500">
-          This run&rsquo;s downstream numbers were computed with <b className="text-slate-900">{g6.strategy}</b> —
-          selecting a different card previews its retention only, it doesn&rsquo;t recompute the rest of the run.
+          This run&rsquo;s downstream numbers were computed with <b className="text-slate-900">{g6.strategy}</b>.
+          Selecting a different card previews its retention only. It doesn&rsquo;t recompute the rest of the run.
         </p>
       )}
 

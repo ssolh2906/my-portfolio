@@ -56,7 +56,7 @@ const PROJECTS: ProjectCardData[] = [
     eyebrow: "AI agent · Bioinformatics",
     title: "Gut Pilot: an AI reviewer for microbiome analysis",
     description:
-      "A 10-gate, human-in-the-loop pipeline where an AI agent proposes every analysis decision with a citation-backed rationale, and a reviewer confirms or overrides it. Fixed demo on two real datasets — colorectal cancer and Parkinson's disease.",
+      "An AI agent proposes every analysis decision and backs it with a citation. I review each one, confirm or override it. Fixed demo on two real datasets: colorectal cancer and Parkinson's disease.",
     tags: ["Python", "FastAPI", "Claude", "React", "16S rRNA"],
     stat: {
       headlineValue: "10",
@@ -73,7 +73,7 @@ const PROJECTS: ProjectCardData[] = [
     eyebrow: "Regulatory genomics · ML",
     title: "Predicting gene expression from histone marks",
     description:
-      "Histone marks near a gene's TSS carry real signal about how much it's expressed — mostly from one feature. Checked against four regression models to make sure the pattern wasn't a modeling artifact.",
+      "Histone marks near a gene's TSS predict how much it's expressed, mostly from one feature. I checked it against four regression models to rule out a modeling artifact.",
     tags: ["Python", "scikit-learn", "gene regulation", "ChIP-seq"],
     stat: {
       headlineValue: BEST_MODEL.pearson.toFixed(2),
@@ -93,7 +93,7 @@ const PROJECTS: ProjectCardData[] = [
     eyebrow: "Bioinformatics · LLM summaries",
     title: "Turning an rs ID into a bioinformatics summary",
     description:
-      "NCBI and Ensembl data, summarized and grounded in real PubMed citations rather than model recall. A fixed demo of a bioinformatics-hackathon pipeline.",
+      "Pulls NCBI and Ensembl data and grounds the summary in real PubMed citations instead of model recall. Fixed demo from a bioinformatics hackathon.",
     tags: ["NCBI", "Ensembl", "PubMed", "Next.js"],
     stat: {
       headlineValue: String(RS6311.dbsnpCitationCount),
@@ -110,7 +110,7 @@ const PROJECTS: ProjectCardData[] = [
     eyebrow: "Single-cell genomics",
     title: `Reading COVID-19 in ${SUMMARY.n_cells_total.toLocaleString("en-US")} blood cells`,
     description:
-      "COVID-19 blood expands activated effector cells and drains the resting naive and memory pool. An interactive single-cell analysis, from CELLxGENE Census data to a browser-native chart.",
+      "COVID-19 blood has more activated effector cells and fewer resting naive and memory cells. Built from CELLxGENE Census data into an interactive chart.",
     tags: ["Python", "scanpy", "single-cell RNA-seq", "Next.js"],
     stat: {
       headlineValue: `${TOP_ROW.fold_change.toFixed(1)}x`,

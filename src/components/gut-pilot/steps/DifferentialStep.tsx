@@ -101,7 +101,7 @@ export default function DifferentialStep({ bundle, onAdvance }: { bundle: GutPil
     <div className="flex flex-col gap-6">
       <SectionHeading
         title="Differential abundance (G10)"
-        lede="Prevalence filter decides how many features are tested — and therefore how strict the multiple-testing correction has to be."
+        lede="Prevalence filter decides how many features are tested, and therefore how strict the multiple-testing correction has to be."
       />
 
       <RunContextStrip bundle={bundle} />

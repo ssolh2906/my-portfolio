@@ -19,7 +19,7 @@ export default function FloatingChat() {
           <b className="text-sm text-slate-900">Ask the reviewer</b>
           <p className="mt-2 text-xs leading-relaxed text-slate-600">
             In the real app, this chat is connected to each page&rsquo;s live data, the reviewer AI agent, and
-            Paperclip&rsquo;s literature search — wired to whichever gate you&rsquo;re on. No live backend is
+            Paperclip&rsquo;s literature search, wired to whichever gate you&rsquo;re on. No live backend is
             attached in this fixed demo, so sending a message here is disabled.
           </p>
         </div>

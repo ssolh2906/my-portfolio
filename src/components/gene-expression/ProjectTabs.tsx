@@ -108,9 +108,11 @@ function OverviewPanel() {
   return (
     <div className="grid gap-12">
       <p className="max-w-[62ch] text-lg leading-relaxed text-slate-600">
-        Do histone marks near a gene&apos;s promoter actually predict how much
-        it gets expressed? Short answer: yes &mdash; and mostly from one
-        signal.
+        A histone is a protein that DNA wraps around to fit inside the
+        nucleus. Modifications to it loosen or tighten that wrapping, which
+        exposes or hides promoter and enhancer regions and changes how much
+        a gene gets transcribed. This model predicts gene expression from
+        four of those modifications, mostly from one signal.
       </p>
 
       <div>
@@ -119,7 +121,7 @@ function OverviewPanel() {
         </h2>
         <p className="mt-2 text-sm text-slate-500">
           Every dot is a held-out gene the model never trained on. Closer to
-          the dashed line = closer prediction.
+          the dashed line means a closer prediction.
         </p>
         <div className="mt-6">
           <PredictionScatter />
@@ -132,9 +134,9 @@ function OverviewPanel() {
         </h2>
         <Bullets
           items={[
-            <>H3K4me3, +150&ndash;200bp from TSS &mdash; the top feature, 36% of the importance</>,
-            <>12&times; the next runner-up</>,
-            <>Right where &quot;active promoter&quot; biology predicts</>,
+            <>H3K4me3, 150&ndash;200bp from the TSS, is the top feature: 36% of the importance</>,
+            <>12&times; the next feature</>,
+            <>Matches where active-promoter biology predicts it should be</>,
           ]}
         />
         <div className="mt-6">
@@ -150,7 +152,7 @@ function OverviewPanel() {
           Does it hold across methods?
         </h2>
         <p className="mt-2 text-sm text-slate-500">
-          All four land in the same range &mdash; not a one-model fluke.
+          All four models land in the same range. Not a one-model fluke.
         </p>
         <div className="mt-6">
           <ModelComparisonChart />
@@ -159,20 +161,20 @@ function OverviewPanel() {
 
       <div>
         <h2 className="text-2xl font-semibold tracking-tight text-slate-900">
-          What this does & and doesn&apos;t explain
+          What this does and doesn&apos;t explain
         </h2>
         <Bullets
           items={[
             <>
               Best model ({BEST_MODEL.label}): R&sup2; {BEST_MODEL.r2.toFixed(3)}, r{" "}
               {BEST_MODEL.pearson.toFixed(3)}. About {(BEST_MODEL.r2 * 100).toFixed(0)}% of
-              the variance
+              the variance.
             </>,
             <>
-              The rest: transcription factor binding, enhancer looping, RNA stability,
-              other post-transcriptional control
+              The rest is transcription factor binding, enhancer looping, RNA stability,
+              and other post-transcriptional control
             </>,
-            <>Target is 1 ENCODE sample, no replicates. Some of that gap is probably noise, not biology</>,
+            <>Target is one ENCODE sample with no replicates, so some of that gap is probably noise, not biology</>,
           ]}
         />
       </div>
