@@ -1,7 +1,10 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+
+import GutPilotVisual from "./GutPilotVisual";
 
 import { FOLD_CHANGE_ROWS, SUMMARY, shortCellTypeLabel } from "@/lib/sc-covid";
 import { VARIANTS as SNP_VARIANTS } from "@/lib/snp-summary";
@@ -38,6 +41,8 @@ type ProjectCardData = {
     headlineLabel: string;
     subStats: { value: string; label: string }[];
   };
+  // When set, replaces the number box with a small diagram + headline caption.
+  visual?: ReactNode;
 };
 
 // Biggest COVID-19 expansion in the dataset (rows are sorted descending by
@@ -66,6 +71,7 @@ const PROJECTS: ProjectCardData[] = [
         { value: "638", label: "samples analyzed" },
       ],
     },
+    visual: <GutPilotVisual />,
   },
 
   {
@@ -174,8 +180,8 @@ export default function Projects() {
                   href={`/projects/${project.slug}`}
                   className="group block rounded-3xl border border-slate-200/80 bg-white/70 p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-md transition-all duration-300 hover:border-slate-300 hover:shadow-lg sm:p-10"
                 >
-                  <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-12">
-                    <div className="lg:col-span-7">
+                  <div className="grid gap-10 md:grid-cols-12 md:items-center md:gap-8 lg:gap-12">
+                    <div className="md:col-span-6">
                       <span className="text-xs font-medium text-slate-500">
                         {project.eyebrow}
                       </span>
@@ -201,26 +207,42 @@ export default function Projects() {
                       </span>
                     </div>
 
-                    <div className="lg:col-span-5">
+                    <div className="md:col-span-6">
                       <div className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-8">
-                        <span className="block text-5xl font-semibold tracking-tight text-slate-900">
-                          {project.stat.headlineValue}
-                        </span>
-                        <span className="mt-2 block text-sm leading-relaxed text-slate-500">
-                          {project.stat.headlineLabel}
-                        </span>
-                        <div className="mt-6 grid grid-cols-2 gap-4 border-t border-slate-100 pt-6">
-                          {project.stat.subStats.map((sub) => (
-                            <div key={sub.label}>
-                              <span className="block text-lg font-semibold text-slate-900">
-                                {sub.value}
+                        {project.visual ? (
+                          <>
+                            {project.visual}
+                            <div className="mt-6 flex items-baseline gap-3 border-t border-slate-100 pt-5">
+                              <span className="text-3xl font-semibold tracking-tight text-slate-900">
+                                {project.stat.headlineValue}
                               </span>
-                              <span className="text-sm text-slate-500">
-                                {sub.label}
+                              <span className="text-sm leading-snug text-slate-500">
+                                {project.stat.headlineLabel}
                               </span>
                             </div>
-                          ))}
-                        </div>
+                          </>
+                        ) : (
+                          <>
+                            <span className="block text-5xl font-semibold tracking-tight text-slate-900">
+                              {project.stat.headlineValue}
+                            </span>
+                            <span className="mt-2 block text-sm leading-relaxed text-slate-500">
+                              {project.stat.headlineLabel}
+                            </span>
+                            <div className="mt-6 grid grid-cols-2 gap-4 border-t border-slate-100 pt-6">
+                              {project.stat.subStats.map((sub) => (
+                                <div key={sub.label}>
+                                  <span className="block text-lg font-semibold text-slate-900">
+                                    {sub.value}
+                                  </span>
+                                  <span className="text-sm text-slate-500">
+                                    {sub.label}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
