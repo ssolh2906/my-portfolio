@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
 import GutPilotVisual from "./GutPilotVisual";
+import GeneExpressionVisual from "./GeneExpressionVisual";
 
 import { FOLD_CHANGE_ROWS, SUMMARY, shortCellTypeLabel } from "@/lib/sc-covid";
 import { VARIANTS as SNP_VARIANTS } from "@/lib/snp-summary";
@@ -92,6 +93,7 @@ const PROJECTS: ProjectCardData[] = [
         { value: GE_SUMMARY.n_features.toLocaleString("en-US"), label: "features per gene" },
       ],
     },
+    visual: <GeneExpressionVisual />,
   },
 
   {
