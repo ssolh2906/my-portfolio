@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 
 const CONTACT_ITEMS = [
   { label: "Personal email", value: "solheetucker@gmail.com", href: "mailto:solheetucker@gmail.com" },
-  { label: "School email", value: "solhee.tucker@gmail.com", href: "mailto:solhee.tucker@gmail.com" },
+  { label: "School email", value: "solhee.tucker@sjsu.edu", href: "mailto:solhee.tucker@sjsu.edu" },
   { label: "Location", value: "San Jose, California, USA", href: null },
 ];
 
