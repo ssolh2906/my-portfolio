@@ -49,6 +49,23 @@
   --color-slate-900: #12161b;
 }
 
+/* Brief grow-and-settle for a chip as it lights up (SNP project card). */
+@theme {
+  --animate-chip-pop: chip-pop 600ms ease-out both;
+
+  @keyframes chip-pop {
+    0% {
+      scale: 1;
+    }
+    35% {
+      scale: 1.18;
+    }
+    100% {
+      scale: 1;
+    }
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

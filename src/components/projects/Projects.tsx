@@ -6,6 +6,8 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import GutPilotVisual from "./GutPilotVisual";
 import GeneExpressionVisual from "./GeneExpressionVisual";
+import SnpVisual from "./SnpVisual";
+import CountUp from "./CountUp";
 
 import { FOLD_CHANGE_ROWS, SUMMARY, shortCellTypeLabel } from "@/lib/sc-covid";
 import { VARIANTS as SNP_VARIANTS } from "@/lib/snp-summary";
@@ -44,6 +46,8 @@ type ProjectCardData = {
   };
   // When set, replaces the number box with a small diagram + headline caption.
   visual?: ReactNode;
+  // Count the (numeric) headline up from 0 while the card is hovered.
+  countUpHeadline?: boolean;
 };
 
 // Biggest COVID-19 expansion in the dataset (rows are sorted descending by
@@ -111,6 +115,8 @@ const PROJECTS: ProjectCardData[] = [
         { value: String(SNP_PAPERS_CITED), label: "papers cited" },
       ],
     },
+    visual: <SnpVisual />,
+    countUpHeadline: true,
   },
 
   {
@@ -216,7 +222,11 @@ export default function Projects() {
                             {project.visual}
                             <div className="mt-6 flex items-baseline gap-3 border-t border-slate-100 pt-5">
                               <span className="text-3xl font-semibold tracking-tight text-slate-900">
-                                {project.stat.headlineValue}
+                                {project.countUpHeadline ? (
+                                  <CountUp to={Number(project.stat.headlineValue)} />
+                                ) : (
+                                  project.stat.headlineValue
+                                )}
                               </span>
                               <span className="text-sm leading-snug text-slate-500">
                                 {project.stat.headlineLabel}
