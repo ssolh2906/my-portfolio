@@ -52,6 +52,17 @@
 /* Brief grow-and-settle for a chip as it lights up (SNP project card). */
 @theme {
   --animate-chip-pop: chip-pop 600ms ease-out both;
+  /* Bars grow outward from the chart axis (COVID project card). */
+  --animate-bar-grow: bar-grow 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes bar-grow {
+    from {
+      scale: 0 1;
+    }
+    to {
+      scale: 1 1;
+    }
+  }
 
   @keyframes chip-pop {
     0% {

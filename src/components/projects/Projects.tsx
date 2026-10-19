@@ -8,6 +8,7 @@ import GutPilotVisual from "./GutPilotVisual";
 import GeneExpressionVisual from "./GeneExpressionVisual";
 import SnpVisual from "./SnpVisual";
 import CountUp from "./CountUp";
+import CovidVisual from "./CovidVisual";
 
 import { FOLD_CHANGE_ROWS, SUMMARY, shortCellTypeLabel } from "@/lib/sc-covid";
 import { VARIANTS as SNP_VARIANTS } from "@/lib/snp-summary";
@@ -140,6 +141,7 @@ const PROJECTS: ProjectCardData[] = [
         },
       ],
     },
+    visual: <CovidVisual />,
   },
 ];
 
