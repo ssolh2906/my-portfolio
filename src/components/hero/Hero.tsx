@@ -118,7 +118,7 @@ export default function Hero() {
             </a>
             <a
               // TODO(Solhee): drop in your real LinkedIn profile URL here
-              href="https://www.linkedin.com/in/YOUR-LINKEDIN-HANDLE"
+              href="https://www.linkedin.com/in/solpt/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
