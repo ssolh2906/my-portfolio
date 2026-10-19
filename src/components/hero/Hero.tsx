@@ -86,7 +86,7 @@ export default function Hero() {
             variants={item}
             className="mt-6 text-balance text-4xl font-semibold leading-[1.1] tracking-tight text-slate-900 sm:text-5xl"
           >
-            I build machine learning tools for biological data.
+            An engineer who speaks biology.
           </motion.h1>
 
           <motion.p
