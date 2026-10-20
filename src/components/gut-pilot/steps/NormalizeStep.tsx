@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { GutPilotBundle } from "@/lib/gut-pilot";
-import { Card, GateNote, RecBadge, SectionHeading, fmt, pct } from "../shared";
+import { Card, GateNote, RecBadge, SectionHeading, fmt, pct, NextButton } from "../shared";
 
 const OPTION_COLOR: Record<string, string> = {
   rarefy: "bg-blue-500",
@@ -238,13 +238,7 @@ export default function NormalizeStep({ bundle, onAdvance }: { bundle: GutPilotB
         </div>
       </div>
 
-      <button
-        type="button"
-        onClick={() => onAdvance?.()}
-        className="self-start rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
-      >
-        Confirm strategy
-      </button>
+      <NextButton label="Confirm strategy" onClick={onAdvance} />
     </div>
   );
 }

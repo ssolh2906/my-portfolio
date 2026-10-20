@@ -93,6 +93,22 @@ export function Opt({
   );
 }
 
+// The per-step "go to next tab" action — always bottom-right so the
+// reader finds it in the same place on every gate.
+export function NextButton({ label, onClick }: { label: string; onClick?: () => void }) {
+  if (!onClick) return null;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex items-center gap-1.5 self-end rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
+    >
+      {label}
+      <span aria-hidden>&rarr;</span>
+    </button>
+  );
+}
+
 export function SectionHeading({ title, lede }: { title: string; lede: string }) {
   return (
     <div>

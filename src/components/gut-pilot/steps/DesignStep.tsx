@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { GutPilotBundle } from "@/lib/gut-pilot";
-import { Card, GateNote, Opt, OptRow, RecBadge, SectionHeading, Stat, fmt } from "../shared";
+import { Card, GateNote, Opt, OptRow, RecBadge, SectionHeading, Stat, fmt, NextButton } from "../shared";
 
 type G1 = {
   recommendation: { option_id: string; label: string };
@@ -244,13 +244,7 @@ export default function DesignStep({ bundle, onAdvance }: { bundle: GutPilotBund
         </div>
       )}
 
-      <button
-        type="button"
-        onClick={() => onAdvance?.()}
-        className="self-start rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
-      >
-        Confirm design
-      </button>
+      <NextButton label="Confirm design" onClick={onAdvance} />
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { DaResults, GutPilotBundle } from "@/lib/gut-pilot";
-import { Card, GateNote, RecBadge, RunContextStrip, SectionHeading, Stat, fmt } from "../shared";
+import { Card, GateNote, RecBadge, RunContextStrip, SectionHeading, Stat, fmt, NextButton } from "../shared";
 
 const STATUS_STYLE: Record<string, string> = {
   confirmed: "bg-emerald-50 text-emerald-700",
@@ -184,13 +184,7 @@ export default function DifferentialStep({ bundle, onAdvance }: { bundle: GutPil
         </div>
       )}
 
-      <button
-        type="button"
-        onClick={() => onAdvance?.()}
-        className="self-start rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
-      >
-        Approve and view summary
-      </button>
+      <NextButton label="Approve and view summary" onClick={onAdvance} />
     </div>
   );
 }

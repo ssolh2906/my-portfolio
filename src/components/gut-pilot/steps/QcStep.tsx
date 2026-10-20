@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { GutPilotBundle } from "@/lib/gut-pilot";
-import { Card, RecBadge, SectionHeading, Stat, fmt } from "../shared";
+import { Card, NextButton, RecBadge, SectionHeading, Stat, fmt } from "../shared";
 
 // Bottom-N by depth, with a draggable floor line — the shape that actually
 // matters for this gate (is anyone near/under the floor), not a full
@@ -105,7 +105,7 @@ function InclusionPanel({
   );
 }
 
-export default function QcStep({ bundle }: { bundle: GutPilotBundle }) {
+export default function QcStep({ bundle, onAdvance }: { bundle: GutPilotBundle; onAdvance?: () => void }) {
   const { stats, bars } = bundle.qcDepth;
   const defaultFloor = bundle.qcFloor.floor;
   const [floor, setFloor] = useState(defaultFloor);
@@ -177,6 +177,8 @@ export default function QcStep({ bundle }: { bundle: GutPilotBundle }) {
         <RecBadge label={`${flagged.length}/${bars.length} flagged`} />
       </div>
       <InclusionPanel bars={bars} floor={floor} />
+
+      <NextButton label="Confirm floor" onClick={onAdvance} />
     </div>
   );
 }

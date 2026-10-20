@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { GutPilotBundle } from "@/lib/gut-pilot";
-import { Card, GateNote, RecBadge, RunContextStrip, SectionHeading, Stat, fmt, pct } from "../shared";
+import { Card, GateNote, RecBadge, RunContextStrip, SectionHeading, Stat, fmt, pct, NextButton } from "../shared";
 import { useToast } from "../Toast";
 
 const GROUP_COLOR = ["#3b82f6", "#e4734f", "#009a9b", "#8b5cf6"];
@@ -251,13 +251,7 @@ export default function BetaStep({ bundle, onAdvance }: { bundle: GutPilotBundle
         </p>
       )}
 
-      <button
-        type="button"
-        onClick={() => onAdvance?.()}
-        className="self-start rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
-      >
-        Approve and compute
-      </button>
+      <NextButton label="Approve and compute" onClick={onAdvance} />
     </div>
   );
 }

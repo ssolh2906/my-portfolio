@@ -6,7 +6,7 @@
 // logic, and every number shown come from the real exported bundles
 // (see src/lib/gut-pilot.ts) — only the visual skin is different from the
 // source app.
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DATASET_IDS, DATASET_LABELS, loadDataset, type DatasetId, type GutPilotBundle } from "@/lib/gut-pilot";
 import { buildDecisionLog } from "./decisionLog";
 import DecisionLogPanel from "./DecisionLogPanel";
@@ -51,6 +51,37 @@ export default function GutPilotEmbed() {
   const [step, setStep] = useState<StepId>("upload");
   const [bundle, setBundle] = useState<GutPilotBundle | null>(null);
   const [loading, setLoading] = useState(true);
+  // Furthest tab the reader has reached; later tabs stay locked so the run
+  // reads as a sequence of gates rather than 8 independent pages.
+  const [unlocked, setUnlocked] = useState(0);
+  const [fastForwarding, setFastForwarding] = useState(false);
+  const stepIndex = STEPS.findIndex((s) => s.id === step);
+  const ffTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const stopFastForward = () => {
+    if (ffTimer.current) clearInterval(ffTimer.current);
+    ffTimer.current = null;
+    setFastForwarding(false);
+  };
+  useEffect(() => stopFastForward, []);
+
+  const goTo = (i: number) => {
+    setStep(STEPS[i].id);
+    setUnlocked((u) => Math.max(u, i));
+  };
+
+  // Every step's default picks are already the agent's recommendations, so
+  // fast-forwarding is just unlocking each tab in turn and landing on Summary.
+  const fastForward = () => {
+    if (ffTimer.current) return;
+    setFastForwarding(true);
+    let i = Math.max(unlocked, stepIndex);
+    ffTimer.current = setInterval(() => {
+      i += 1;
+      goTo(i);
+      if (i >= STEPS.length - 1) stopFastForward();
+    }, 220);
+  };
 
   // Resetting loading/bundle synchronously here (not just in the .then) is
   // what makes switching datasets show a loading state immediately instead
@@ -74,8 +105,8 @@ export default function GutPilotEmbed() {
 
   const log = useMemo(() => (bundle ? buildDecisionLog(bundle) : []), [bundle]);
   const StepComponent = STEP_COMPONENT[step];
-  const stepIndex = STEPS.findIndex((s) => s.id === step);
-  const nextStep = STEPS[stepIndex + 1]?.id;
+  const hasNext = stepIndex < STEPS.length - 1;
+  const atEnd = unlocked >= STEPS.length - 1;
 
   return (
     <>
@@ -98,8 +129,10 @@ export default function GutPilotEmbed() {
               key={id}
               type="button"
               onClick={() => {
+                stopFastForward();
                 setDataset(id);
                 setStep("upload");
+                setUnlocked(0);
               }}
               aria-pressed={id === dataset}
               className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors duration-200 ${
@@ -111,7 +144,18 @@ export default function GutPilotEmbed() {
           ))}
         </div>
         {!loading && bundle && (
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-2">
+            <button
+              type="button"
+              onClick={fastForward}
+              disabled={fastForwarding || atEnd}
+              className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-blue-700 transition-colors duration-200 hover:border-blue-400 hover:bg-blue-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-blue-200 disabled:hover:bg-white"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5" aria-hidden>
+                <path d="M3 6.5v11l8-5.5-8-5.5Zm9 0v11l8-5.5-8-5.5Z" />
+              </svg>
+              Fast-forward with agent picks
+            </button>
             <DecisionLogPanel log={log} />
           </div>
         )}
@@ -119,24 +163,43 @@ export default function GutPilotEmbed() {
 
       {/* tab bar */}
       <nav className="flex gap-0.5 overflow-x-auto border-b border-slate-200/80 px-5" aria-label="Analysis pages">
-        {STEPS.map((s) => {
+        {STEPS.map((s, i) => {
           const isCurrent = s.id === step;
+          const isLocked = i > unlocked;
+          const isDone = i < unlocked && !isCurrent;
           return (
             <button
               key={s.id}
               type="button"
               onClick={() => setStep(s.id)}
+              disabled={isLocked}
               aria-current={isCurrent ? "page" : undefined}
-              className={`flex flex-none items-center gap-2 border-b-2 px-3 py-3 text-xs font-semibold whitespace-nowrap transition-colors duration-200 ${
-                isCurrent ? "border-blue-600 text-blue-700" : "border-transparent text-slate-500 hover:text-slate-900"
+              className={`flex flex-none items-center gap-2 border-b-2 px-3 py-3 text-xs font-semibold whitespace-nowrap transition-colors duration-500 ${
+                isCurrent
+                  ? "border-blue-600 text-blue-700"
+                  : isLocked
+                    ? "cursor-not-allowed border-transparent text-slate-300"
+                    : "border-transparent text-slate-700 hover:text-slate-900"
               }`}
             >
               <span
-                className={`flex h-[19px] w-[19px] items-center justify-center rounded-full border font-mono text-[10px] font-bold ${
-                  isCurrent ? "border-blue-600 bg-blue-600 text-white" : "border-slate-300 text-slate-500"
+                className={`flex h-[19px] w-[19px] items-center justify-center rounded-full border font-mono text-[10px] font-bold transition-colors duration-500 ${
+                  isCurrent
+                    ? "border-blue-600 bg-blue-600 text-white"
+                    : isDone
+                      ? "border-blue-200 bg-blue-50 text-blue-700"
+                      : isLocked
+                        ? "border-slate-200 text-slate-300"
+                        : "border-slate-400 text-slate-600"
                 }`}
               >
-                {s.n}
+                {isDone ? (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-2.5 w-2.5" aria-hidden>
+                    <path d="M5 12.5 9.5 17 19 7" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                ) : (
+                  s.n
+                )}
               </span>
               {s.label}
             </button>
@@ -149,7 +212,7 @@ export default function GutPilotEmbed() {
         {loading || !bundle ? (
           <div className="flex h-64 items-center justify-center text-sm text-slate-400">Loading run…</div>
         ) : (
-          <StepComponent bundle={bundle} onAdvance={nextStep ? () => setStep(nextStep) : undefined} />
+          <StepComponent bundle={bundle} onAdvance={hasNext ? () => goTo(stepIndex + 1) : undefined} />
         )}
       </div>
 

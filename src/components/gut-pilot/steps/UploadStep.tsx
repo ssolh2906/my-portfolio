@@ -1,5 +1,5 @@
 import type { GutPilotBundle } from "@/lib/gut-pilot";
-import { Stat } from "../shared";
+import { NextButton, Stat } from "../shared";
 
 type ParseReport = {
   status: string;
@@ -12,7 +12,7 @@ type ParseReport = {
   summary: string;
 };
 
-export default function UploadStep({ bundle }: { bundle: GutPilotBundle }) {
+export default function UploadStep({ bundle, onAdvance }: { bundle: GutPilotBundle; onAdvance?: () => void }) {
   const pr = bundle.session.parse_report as unknown as ParseReport | null;
   if (!pr) return null;
 
@@ -75,6 +75,8 @@ export default function UploadStep({ bundle }: { bundle: GutPilotBundle }) {
       </dl>
 
       <p className="text-xs leading-relaxed text-slate-400">{pr.taxonomy.format}</p>
+
+      <NextButton label="Continue to design" onClick={onAdvance} />
     </div>
   );
 }

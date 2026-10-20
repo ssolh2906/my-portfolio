@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { GutPilotBundle } from "@/lib/gut-pilot";
-import { Card, GateNote, Opt, OptRow, RecBadge, RunContextStrip, SectionHeading, Stat } from "../shared";
+import { Card, GateNote, Opt, OptRow, RecBadge, RunContextStrip, SectionHeading, Stat, NextButton } from "../shared";
 
 const METRICS = ["Observed_taxa", "Shannon", "Simpson", "Chao1", "Pielou_evenness"];
 const ALPHA_LEVELS = [
@@ -131,13 +131,7 @@ export default function AlphaStep({ bundle, onAdvance }: { bundle: GutPilotBundl
         </Card>
       )}
 
-      <button
-        type="button"
-        onClick={() => onAdvance?.()}
-        className="self-start rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-700"
-      >
-        Approve and compute
-      </button>
+      <NextButton label="Approve and compute" onClick={onAdvance} />
     </div>
   );
 }
