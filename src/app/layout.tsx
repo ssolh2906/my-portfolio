@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 const SITE_URL = "https://solhee-tucker.vercel.app";
-const TITLE = "Solhee Tucker - ML / Bioinformatics Engineer";
+const TITLE = "Solhee Tucker - Software Engineer · Bioinformatics";
 const DESCRIPTION =
-  "Portfolio of Solhee Tucker, a machine learning engineer with a bioinformatics background.";
+  "Portfolio of Solhee Tucker, a software engineer who builds bioinformatics tools and analyses, end to end.";
 
 // The link preview image is src/app/opengraph-image.png (source:
 // design/og-image.html). The old my-portfolio-five-amber-97.vercel.app domain

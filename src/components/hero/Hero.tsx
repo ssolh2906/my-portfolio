@@ -78,7 +78,7 @@ export default function Hero() {
           <motion.div variants={item}>
             <p className="text-sm font-medium text-slate-700">Solhee Tucker</p>
             <p className="mt-1 text-sm font-medium text-denim-600">
-              ML / Bioinformatics Engineer
+              Software Engineer · Bioinformatics
             </p>
           </motion.div>
 
