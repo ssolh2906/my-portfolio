@@ -6,8 +6,8 @@ import { useEffect, useRef, useState } from "react";
 const HOLD_MS = 500;
 const DURATION_MS = 1900;
 
-// Shows `to` at rest. While the surrounding card link is hovered it counts up
-// from 0, so it can sit anywhere inside the card without extra state wiring.
+// Shows `to` at rest. While the surrounding card link is hovered (or plays on
+// a touch screen) it counts up from 0, so it can sit anywhere inside the card without extra state wiring.
 export default function CountUp({ to }: { to: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [value, setValue] = useState(to);
@@ -40,10 +40,15 @@ export default function CountUp({ to }: { to: number }) {
 
     card.addEventListener("mouseenter", start);
     card.addEventListener("mouseleave", reset);
+    // Touch screens: Projects fires these when the card scrolls in and out.
+    card.addEventListener("cardplay", start);
+    card.addEventListener("cardstop", reset);
     return () => {
       stop();
       card.removeEventListener("mouseenter", start);
       card.removeEventListener("mouseleave", reset);
+      card.removeEventListener("cardplay", start);
+      card.removeEventListener("cardstop", reset);
     };
   }, [to]);
 

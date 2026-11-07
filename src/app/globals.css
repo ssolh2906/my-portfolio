@@ -1,6 +1,21 @@
 @import "tailwindcss";
 @import "../../design/plot-palette.css";
 
+/* hover: the stock variant (real hover on hover-capable devices), plus
+   [data-play]. On touch screens Projects.tsx sets data-play on a project
+   card while it is on screen, so every group-hover animation inside the
+   card plays without a pointer. */
+@custom-variant hover {
+  @media (hover: hover) {
+    &:hover {
+      @slot;
+    }
+  }
+  &[data-play] {
+    @slot;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #12161b;
