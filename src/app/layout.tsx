@@ -13,10 +13,31 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://solhee-tucker.vercel.app";
+const TITLE = "Solhee Tucker - ML / Bioinformatics Engineer";
+const DESCRIPTION =
+  "Portfolio of Solhee Tucker, a machine learning engineer with a bioinformatics background.";
+
+// The link preview image is src/app/opengraph-image.png (source:
+// design/og-image.html). The old my-portfolio-five-amber-97.vercel.app domain
+// redirects here, so every preview and canonical URL points at SITE_URL.
 export const metadata: Metadata = {
-  title: "Solhee Tucker - ML / Bioinformatics Engineer",
-  description:
-    "Portfolio of Solhee Tucker, a machine learning engineer with a bioinformatics background.",
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "Solhee Tucker",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
