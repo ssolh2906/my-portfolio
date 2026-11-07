@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { Fragment, type CSSProperties } from "react";
 
 import sample from "@/data/gene-expression/scatter-sample.json";
 import { BEST_MODEL, SUMMARY } from "@/lib/gene-expression";
@@ -19,12 +19,25 @@ const px = (v: number) => PAD + (v - DOMAIN_MIN) * SCALE;
 // Flip y so a higher predicted value sits higher on screen.
 const py = (v: number) => SIZE - PAD - (v - DOMAIN_MIN) * SCALE;
 
+// "HistGradientBoosting" is one long word, too wide for a phone. Allow a line
+// break before each capital so it wraps as Hist/Gradient/Boosting, while the
+// text (and copy-paste) stays the exact class name.
+function CamelBreaks({ text }: { text: string }) {
+  const parts = text.split(/(?=[A-Z])/);
+  return parts.map((part, i) => (
+    <Fragment key={i}>
+      {i > 0 && <wbr />}
+      {part}
+    </Fragment>
+  ));
+}
+
 export default function GeneExpressionVisual() {
   return (
     <div className="flex items-center gap-5">
       <svg
         viewBox={`0 0 ${SIZE} ${SIZE}`}
-        className="w-36 shrink-0"
+        className="w-28 shrink-0 sm:w-36"
         role="img"
         aria-label="Predicted versus actual gene expression for a sample of held-out genes, clustered around the perfect-prediction line"
       >
@@ -72,7 +85,9 @@ export default function GeneExpressionVisual() {
           {SUMMARY.n_test.toLocaleString("en-US")}
         </dd>
         <dt className="text-xs">Model</dt>
-        <dd className="mb-3 font-medium text-slate-900">{BEST_MODEL.label}</dd>
+        <dd className="mb-3 font-medium text-slate-900">
+          <CamelBreaks text={BEST_MODEL.label} />
+        </dd>
         <dt className="text-xs">Coral line</dt>
         <dd>perfect prediction</dd>
       </dl>

@@ -19,13 +19,6 @@ import {
   TOP_FEATURE,
 } from "@/lib/gene-expression";
 
-const container = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.12, delayChildren: 0.05 },
-  },
-};
-
 const item = {
   hidden: { opacity: 0, y: 20 },
   show: {
@@ -173,7 +166,7 @@ const PROJECTS: ProjectCardData[] = [
 
 function CardBody({ project }: { project: ProjectCardData }) {
   return (
-    <div className="grid gap-10 md:grid-cols-12 md:items-center md:gap-8 lg:gap-12">
+    <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:items-center md:gap-8 lg:gap-12">
       <div className="md:col-span-6">
         <span className="text-xs font-medium text-slate-500">
           {project.eyebrow}
@@ -319,25 +312,30 @@ export default function Projects() {
   const reduceMotion = useReducedMotion();
   const gridRef = useAutoPlayOnTouch();
 
+  // Each block fades in on its own as its top edge comes on screen. (One
+  // reveal for the whole section waited until 10% of it was visible: on a
+  // phone that is ~400px of a ~4,000px list, so Projects looked empty.)
+  const reveal = {
+    variants: item,
+    initial: reduceMotion ? "show" : "hidden",
+    whileInView: "show",
+    viewport: { once: true, margin: "0px 0px -60px 0px" },
+  } as const;
+
   return (
     <section id="projects" className="relative bg-[#f6f8fb]">
       <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-4 sm:px-8 md:pb-32 lg:px-12">
-        <motion.div
-          variants={container}
-          initial={reduceMotion ? "show" : "hidden"}
-          whileInView="show"
-          viewport={{ once: true, amount: 0.1 }}
-        >
+        <div>
           <motion.h2
-            variants={item}
+            {...reveal}
             className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl"
           >
             Projects
           </motion.h2>
 
-          <div ref={gridRef} className="mt-10 grid gap-6 sm:mt-14">
+          <div ref={gridRef} className="mt-10 grid grid-cols-1 gap-6 sm:mt-14">
             {PROJECTS.map((project) => (
-              <motion.div key={project.slug} variants={item}>
+              <motion.div key={project.slug} {...reveal}>
                 {project.href ? (
                   <a
                     href={project.href}
@@ -364,14 +362,14 @@ export default function Projects() {
           {GITHUB_PROJECTS.length > 0 && (
           <>
           <motion.h3
-            variants={item}
+            {...reveal}
             className="mt-16 text-sm font-medium uppercase tracking-[0.14em] text-slate-500 sm:mt-20"
           >
             More on GitHub
           </motion.h3>
 
           <motion.div
-            variants={item}
+            {...reveal}
             className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
           >
             {GITHUB_PROJECTS.map((repo) => (
@@ -411,7 +409,7 @@ export default function Projects() {
           </motion.div>
           </>
           )}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
